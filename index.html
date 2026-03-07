@@ -1,80 +1,151 @@
 <!DOCTYPE html>
 <html>
 <head>
+
 <title>HexHounds Game Night</title>
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <style>
+
 body{
 background:black;
 color:white;
 font-family:Arial;
 text-align:center;
-padding:40px;
+padding:20px;
 }
 
 h1{
 color:#39ff14;
 font-size:48px;
+margin-bottom:40px;
 }
 
-button{
-font-size:30px;
-padding:20px 40px;
+.container{
+display:flex;
+justify-content:space-around;
+flex-wrap:wrap;
+}
+
+.team{
+border:2px solid #39ff14;
 border-radius:20px;
+padding:20px;
+width:300px;
+margin:10px;
+}
+
+.players{
+margin-top:10px;
+min-height:80px;
+}
+
+.buzzer{
+margin-top:40px;
+font-size:40px;
+padding:30px 60px;
+border-radius:100px;
 background:red;
 color:white;
 border:none;
 cursor:pointer;
 }
 
-.team{
-display:inline-block;
-width:40%;
-margin:20px;
-padding:20px;
-border:2px solid #39ff14;
-border-radius:20px;
+.buzzer:disabled{
+background:#555;
+cursor:not-allowed;
 }
+
+.result{
+margin-top:30px;
+font-size:28px;
+color:#39ff14;
+}
+
+.timer{
+margin-top:20px;
+font-size:32px;
+}
+
 </style>
+
 </head>
 
 <body>
 
 <h1>HEXHOUNDS</h1>
 
+<div class="container">
+
 <div class="team">
-<h2>Team A</h2>
-<p id="teamAplayers"></p>
+<h2 id="teamAname">Team A</h2>
+<div class="players" id="teamAplayers"></div>
 <h3>Score: <span id="scoreA">0</span></h3>
 </div>
 
 <div class="team">
-<h2>Team B</h2>
-<p id="teamBplayers"></p>
+<h2 id="teamBname">Team B</h2>
+<div class="players" id="teamBplayers"></div>
 <h3>Score: <span id="scoreB">0</span></h3>
 </div>
 
-<br><br>
+</div>
 
-<button onclick="buzz()">BUZZ</button>
+<button class="buzzer" id="buzzButton">BUZZ</button>
 
-<h2 id="buzzResult"></h2>
+<div class="result" id="buzzResult"></div>
+
+<div class="timer" id="timer">30</div>
 
 <script>
 
-let buzzerLocked=false;
+let buzzerLocked=false
+let timer=30
+let timerRunning=false
 
-function buzz(){
+const buzzButton=document.getElementById("buzzButton")
+const buzzResult=document.getElementById("buzzResult")
+const timerDisplay=document.getElementById("timer")
 
-if(buzzerLocked)return;
+buzzButton.onclick=()=>{
 
-buzzerLocked=true;
+if(buzzerLocked)return
 
-document.getElementById("buzzResult").innerText="Someone Buzzed!";
+buzzerLocked=true
+
+buzzResult.innerText="Someone Buzzed First!"
+
+buzzButton.disabled=true
+
+}
+
+function startTimer(){
+
+if(timerRunning)return
+
+timerRunning=true
+
+const interval=setInterval(()=>{
+
+timer--
+
+timerDisplay.innerText=timer
+
+if(timer<=0){
+
+clearInterval(interval)
+
+timerRunning=false
+
+}
+
+},1000)
 
 }
 
 </script>
 
 </body>
+
 </html>
