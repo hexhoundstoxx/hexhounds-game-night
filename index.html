@@ -597,6 +597,45 @@ const waitingMessage = document.getElementById("waitingMessage");
     let players = [];
     let currentPlayer = null;
     let localTimerInterval = null;
+    function playTone(frequency = 440, duration = 200, type = "square", volume = 0.15) {
+  try {
+    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+    if (!AudioContextClass) return;
+
+    const audioCtx = new AudioContextClass();
+    const oscillator = audioCtx.createOscillator();
+    const gainNode = audioCtx.createGain();
+
+    oscillator.type = type;
+    oscillator.frequency.setValueAtTime(frequency, audioCtx.currentTime);
+
+    gainNode.gain.setValueAtTime(volume, audioCtx.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration / 1000);
+
+    oscillator.connect(gainNode);
+    gainNode.connect(audioCtx.destination);
+
+    oscillator.start();
+    oscillator.stop(audioCtx.currentTime + duration / 1000);
+
+    oscillator.onended = () => {
+      audioCtx.close();
+    };
+  } catch (err) {
+    console.log("Audio could not play:", err);
+  }
+}
+
+function playBuzzSound() {
+  playTone(160, 180, "sawtooth", 0.18);
+  setTimeout(() => playTone(110, 220, "square", 0.14), 90);
+}
+
+function playTimerEndSound() {
+  playTone(880, 120, "square", 0.12);
+  setTimeout(() => playTone(660, 120, "square", 0.12), 140);
+  setTimeout(() => playTone(440, 180, "square", 0.14), 280);
+}
 
     function isAdmin() {
       return window.location.hash === ADMIN_HASH;
@@ -974,6 +1013,7 @@ if (currentPlayer) {
         })
         .eq("id", 1);
 
+      playBuzzSound();
       await refreshAll();
     }
 
@@ -991,12 +1031,14 @@ if (currentPlayer) {
             .eq("id", 1);
         }
 
-        if (gameState.timer_running && gameState.time_left <= 1) {
-          await supabase
-            .from("game_state")
-            .update({ time_left: 0, timer_running: false })
-            .eq("id", 1);
-        }
+if (gameState.timer_running && gameState.time_left <= 1) {
+  await supabase
+    .from("game_state")
+    .update({ time_left: 0, timer_running: false })
+    .eq("id", 1);
+
+  playTimerEndSound();
+}
 
         await refreshAll();
       }, 1000);
