@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>HexHounds Game Night</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body{
+background:black;
+color:white;
+font-family:Arial;
+text-align:center;
+padding:40px;
+}
+
+h1{
+color:#39ff14;
+font-size:48px;
+}
+
+button{
+font-size:30px;
+padding:20px 40px;
+border-radius:20px;
+background:red;
+color:white;
+border:none;
+cursor:pointer;
+}
+
+.team{
+display:inline-block;
+width:40%;
+margin:20px;
+padding:20px;
+border:2px solid #39ff14;
+border-radius:20px;
+}
+</style>
+</head>
+
+<body>
+
+<h1>HEXHOUNDS</h1>
+
+<div class="team">
+<h2>Team A</h2>
+<p id="teamAplayers"></p>
+<h3>Score: <span id="scoreA">0</span></h3>
+</div>
+
+<div class="team">
+<h2>Team B</h2>
+<p id="teamBplayers"></p>
+<h3>Score: <span id="scoreB">0</span></h3>
+</div>
+
+<br><br>
+
+<button onclick="buzz()">BUZZ</button>
+
+<h2 id="buzzResult"></h2>
+
+<script>
+
+let buzzerLocked=false;
+
+function buzz(){
+
+if(buzzerLocked)return;
+
+buzzerLocked=true;
+
+document.getElementById("buzzResult").innerText="Someone Buzzed!";
+
+}
+
+</script>
+
+</body>
+</html>
