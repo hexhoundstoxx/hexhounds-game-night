@@ -468,6 +468,9 @@
         <button class="btn-green" id="joinBtn">Join Game</button>
       </div>
       <div class="error" id="joinError"></div>
+<div id="waitingMessage" class="hidden" style="margin-top:14px;text-align:center;padding:14px 16px;border-radius:16px;border:1px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.05);color:rgba(255,255,255,0.82);font-weight:700;line-height:1.5;">
+  You’re in the lobby, waiting for the admin to assign you to a team!
+</div>
     </div>
 
     <div class="admin-card hidden" id="adminCard">
@@ -564,6 +567,7 @@
     const usernameInput = document.getElementById("usernameInput");
     const joinBtn = document.getElementById("joinBtn");
     const joinError = document.getElementById("joinError");
+const waitingMessage = document.getElementById("waitingMessage");
     const teamAName = document.getElementById("teamAName");
     const teamBName = document.getElementById("teamBName");
     const teamAPlayers = document.getElementById("teamAPlayers");
@@ -751,18 +755,31 @@
         adminCard.classList.add("hidden");
       }
 
-      if (currentPlayer) {
-        joinCard.classList.add("hidden");
-        userPill.textContent = currentPlayer.team
-          ? `${currentPlayer.username} • ${currentPlayer.team === "a" ? gameState.team_a_name : gameState.team_b_name}`
-          : `${currentPlayer.username} • Unassigned`;
-      } else if (!isAdmin()) {
-        joinCard.classList.remove("hidden");
-        userPill.textContent = "Not Joined";
-      } else {
-        joinCard.classList.add("hidden");
-        userPill.textContent = "Admin";
-      }
+if (currentPlayer) {
+  joinCard.classList.remove("hidden");
+  usernameInput.classList.add("hidden");
+  joinBtn.classList.add("hidden");
+  joinError.textContent = "";
+
+  if (currentPlayer.team) {
+    waitingMessage.classList.remove("hidden");
+    waitingMessage.textContent = `You joined successfully and are on ${currentPlayer.team === "a" ? gameState.team_a_name : gameState.team_b_name}.`;
+    userPill.textContent = `${currentPlayer.username} • ${currentPlayer.team === "a" ? gameState.team_a_name : gameState.team_b_name}`;
+  } else {
+    waitingMessage.classList.remove("hidden");
+    waitingMessage.textContent = "You’re in the lobby. Waiting for the admin to assign you to a team.";
+    userPill.textContent = `${currentPlayer.username} • Unassigned`;
+  }
+} else if (!isAdmin()) {
+  joinCard.classList.remove("hidden");
+  usernameInput.classList.remove("hidden");
+  joinBtn.classList.remove("hidden");
+  waitingMessage.classList.add("hidden");
+  userPill.textContent = "Not Joined";
+} else {
+  joinCard.classList.add("hidden");
+  userPill.textContent = "Admin";
+}
 
       teamAName.textContent = gameState?.team_a_name || "Team Hexx";
       teamBName.textContent = gameState?.team_b_name || "Team Toxx";
