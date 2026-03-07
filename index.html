@@ -1017,33 +1017,37 @@ if (currentPlayer) {
       await refreshAll();
     }
 
-    function startLocalTimerLoop() {
-      if (localTimerInterval) clearInterval(localTimerInterval);
+function startLocalTimerLoop() {
+  if (localTimerInterval) clearInterval(localTimerInterval);
 
-      localTimerInterval = setInterval(async () => {
-        await loadGameState();
-        if (!gameState) return;
+  localTimerInterval = setInterval(async () => {
+    await loadGameState();
+    if (!gameState) return;
 
-        if (gameState.timer_running && gameState.time_left > 0) {
-          await supabase
-            .from("game_state")
-            .update({ time_left: gameState.time_left - 1 })
-            .eq("id", 1);
-        }
-
-if (gameState.timer_running && gameState.time_left <= 1) {
-  await supabase
-    .from("game_state")
-    .update({ time_left: 0, timer_running: false })
-    .eq("id", 1);
-
-  playTimerEndSound();
-}
-
-        await refreshAll();
-      }, 1000);
+    if (!isAdmin()) {
+      await refreshAll();
+      return;
     }
 
+    if (gameState.timer_running && gameState.time_left > 0) {
+      await supabase
+        .from("game_state")
+        .update({ time_left: gameState.time_left - 1 })
+        .eq("id", 1);
+    }
+
+    if (gameState.timer_running && gameState.time_left <= 1) {
+      await supabase
+        .from("game_state")
+        .update({ time_left: 0, timer_running: false })
+        .eq("id", 1);
+
+      playTimerEndSound();
+    }
+
+    await refreshAll();
+  }, 1000);
+}
     joinBtn.addEventListener("click", joinGame);
     buzzButton.addEventListener("click", buzz);
 
