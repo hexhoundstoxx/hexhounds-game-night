@@ -4,13 +4,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>HexHounds Game Night</title>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Rubik+Spray+Paint&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Rubik+Spray+Paint&display=swap" rel="stylesheet">
+
   <style>
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       margin: 0;
@@ -29,8 +29,7 @@
       position: fixed;
       inset: 0;
       pointer-events: none;
-      background:
-        radial-gradient(rgba(255,255,255,0.05) 1px, transparent 1px);
+      background: radial-gradient(rgba(255,255,255,0.05) 1px, transparent 1px);
       background-size: 18px 18px;
       opacity: 0.18;
     }
@@ -43,24 +42,24 @@
       z-index: 1;
     }
 
-.title {
-  text-align: center;
-  margin: 20px 0 40px;
-  font-size: clamp(52px, 9vw, 108px);
-  font-weight: 400;
-  letter-spacing: 4px;
-  text-transform: uppercase;
-  color: #fff;
-  font-family: "Rubik Spray Paint", system-ui;
-  background: linear-gradient(90deg, #39ff14, #ff40d6, #b86bff);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  text-shadow:
-    0 0 10px rgba(57,255,20,0.2),
-    0 0 20px rgba(255,64,214,0.2),
-    0 0 35px rgba(184,107,255,0.15);
-  transform: rotate(-1deg);
-}
+    .title {
+      text-align: center;
+      margin: 20px 0 40px;
+      font-size: clamp(52px, 9vw, 108px);
+      font-weight: 400;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: #fff;
+      font-family: "Rubik Spray Paint", system-ui;
+      background: linear-gradient(90deg, #39ff14, #ff40d6, #b86bff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow:
+        0 0 10px rgba(57,255,20,0.2),
+        0 0 20px rgba(255,64,214,0.2),
+        0 0 35px rgba(184,107,255,0.15);
+      transform: rotate(-1deg);
+    }
 
     .subtitle {
       text-align: center;
@@ -70,6 +69,101 @@
       font-size: 12px;
       letter-spacing: 5px;
       text-transform: uppercase;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+    }
+
+    .pill {
+      border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(255,255,255,0.06);
+      color: white;
+      border-radius: 999px;
+      padding: 10px 16px;
+      font-weight: bold;
+    }
+
+    .join-card, .admin-card {
+      max-width: 760px;
+      margin: 0 auto 28px;
+      background: rgba(0,0,0,0.5);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 24px;
+      padding: 20px;
+      box-shadow: 0 0 20px rgba(255,255,255,0.04);
+    }
+
+    .join-title, .admin-title {
+      font-size: 22px;
+      font-weight: 900;
+      margin-bottom: 14px;
+      text-align: center;
+    }
+
+    .join-row, .admin-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    input, select {
+      flex: 1;
+      min-width: 180px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(255,255,255,0.06);
+      color: white;
+      padding: 14px 16px;
+      font-size: 16px;
+      outline: none;
+    }
+
+    input::placeholder {
+      color: rgba(255,255,255,0.45);
+    }
+
+    button {
+      border: none;
+      border-radius: 14px;
+      padding: 14px 18px;
+      font-size: 15px;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .btn-green {
+      background: #39ff14;
+      color: black;
+    }
+
+    .btn-pink {
+      background: #ff40d6;
+      color: white;
+    }
+
+    .btn-dark {
+      background: rgba(255,255,255,0.08);
+      color: white;
+      border: 1px solid rgba(255,255,255,0.14);
+    }
+
+    .small-btn {
+      padding: 10px 12px;
+      font-size: 13px;
+      border-radius: 12px;
+    }
+
+    .error {
+      margin-top: 12px;
+      color: #ff8c8c;
+      text-align: center;
+      font-weight: bold;
     }
 
     .arena {
@@ -134,6 +228,24 @@
       font-size: 24px;
       font-weight: bold;
       text-align: left;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .player.you {
+      background: white;
+      color: black;
+    }
+
+    .tag {
+      font-size: 12px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: black;
+      color: white;
+      font-weight: 900;
     }
 
     .score-box {
@@ -213,13 +325,8 @@
       transition: transform 0.12s ease, opacity 0.2s ease;
     }
 
-    .buzzer:hover {
-      transform: scale(1.03);
-    }
-
-    .buzzer:active {
-      transform: scale(0.97);
-    }
+    .buzzer:hover { transform: scale(1.03); }
+    .buzzer:active { transform: scale(0.97); }
 
     .buzzer:disabled {
       cursor: not-allowed;
@@ -284,72 +391,131 @@
       text-shadow: 0 0 14px rgba(57,255,20,0.28);
     }
 
+    .section-label {
+      font-size: 12px;
+      letter-spacing: 4px;
+      color: rgba(255,255,255,0.55);
+      text-transform: uppercase;
+      margin: 18px 0 10px;
+      font-weight: 900;
+    }
+
+    .admin-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-top: 10px;
+    }
+
+    .admin-box {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 18px;
+      padding: 14px;
+    }
+
+    .player-admin-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .player-admin-row:last-child {
+      border-bottom: none;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
     @media (max-width: 1100px) {
-      .arena {
-        grid-template-columns: 1fr;
-      }
-
-      .center-column {
-        order: 3;
-        padding-top: 0;
-      }
-
-      .team-card {
-        min-height: auto;
-      }
+      .arena { grid-template-columns: 1fr; }
+      .center-column { order: 3; padding-top: 0; }
+      .team-card { min-height: auto; }
+      .admin-grid { grid-template-columns: 1fr; }
     }
 
     @media (max-width: 640px) {
-      .page {
-        padding: 18px 12px 30px;
-      }
-
-      .team-name {
-        font-size: 34px;
-      }
-
-      .player {
-        font-size: 20px;
-      }
-
-      .buzzer-wrap {
-        width: 190px;
-        height: 190px;
-      }
-
-      .buzzer {
-        width: 165px;
-        height: 165px;
-        font-size: 42px;
-      }
-
-      .first-buzz-name {
-        font-size: 36px;
-      }
-
-      .timer-value {
-        font-size: 46px;
-      }
+      .page { padding: 18px 12px 30px; }
+      .team-name { font-size: 34px; }
+      .player { font-size: 20px; }
+      .buzzer-wrap { width: 190px; height: 190px; }
+      .buzzer { width: 165px; height: 165px; font-size: 42px; }
+      .first-buzz-name { font-size: 36px; }
+      .timer-value { font-size: 46px; }
+      .join-row, .admin-row { flex-direction: column; align-items: stretch; }
+      input, select, button { width: 100%; }
     }
   </style>
 </head>
 <body>
   <div class="page">
+    <div class="topbar">
+      <div class="pill" id="modePill">Player View</div>
+      <div class="pill" id="userPill">Not Joined</div>
+    </div>
+
     <div class="title">HexHounds</div>
     <div class="subtitle">Community Game Night</div>
+
+    <div class="join-card" id="joinCard">
+      <div class="join-title">Join Tonight's Game</div>
+      <div class="join-row">
+        <input id="usernameInput" type="text" placeholder="Enter temporary username" />
+        <button class="btn-green" id="joinBtn">Join Game</button>
+      </div>
+      <div class="error" id="joinError"></div>
+    </div>
+
+    <div class="admin-card hidden" id="adminCard">
+      <div class="admin-title">Admin Control Panel</div>
+
+      <div class="admin-row">
+        <input id="teamAInput" type="text" placeholder="Team A name" />
+        <input id="teamBInput" type="text" placeholder="Team B name" />
+        <button class="btn-green" id="saveTeamsBtn">Save Team Names</button>
+      </div>
+
+      <div class="section-label">Timer + Round</div>
+      <div class="admin-row">
+        <input id="timerInput" type="number" min="0" placeholder="Seconds" />
+        <button class="btn-green" id="setTimerBtn">Set Timer</button>
+        <button class="btn-dark" id="startTimerBtn">Start Timer</button>
+        <button class="btn-dark" id="pauseTimerBtn">Pause Timer</button>
+        <button class="btn-pink" id="resetBuzzerBtn">Reset Buzzer</button>
+      </div>
+
+      <div class="section-label">Scores</div>
+      <div class="admin-row">
+        <button class="btn-green" id="scoreAPlus">+1 Team A</button>
+        <button class="btn-dark" id="scoreAMinus">-1 Team A</button>
+        <button class="btn-pink" id="scoreBPlus">+1 Team B</button>
+        <button class="btn-dark" id="scoreBMinus">-1 Team B</button>
+      </div>
+
+      <div class="section-label">Players</div>
+      <div class="admin-grid">
+        <div class="admin-box">
+          <div class="section-label" style="margin-top:0;">Unassigned</div>
+          <div id="unassignedAdminList"></div>
+        </div>
+        <div class="admin-box">
+          <div class="section-label" style="margin-top:0;">All Players</div>
+          <div id="allPlayersAdminList"></div>
+        </div>
+      </div>
+    </div>
 
     <div class="arena">
       <div class="team-card team-a">
         <h2 class="team-name" id="teamAName">Team Hexx</h2>
-        <div class="player-list" id="teamAPlayers">
-          <div class="player">Sora</div>
-          <div class="player">HexxKitty</div>
-          <div class="player">BlowShocker</div>
-          <div class="player">Nerve</div>
-        </div>
+        <div class="player-list" id="teamAPlayers"></div>
         <div class="score-box">
           <div class="score-label">Score</div>
-          <div class="score-value" id="scoreA">3</div>
+          <div class="score-value" id="scoreA">0</div>
         </div>
       </div>
 
@@ -361,8 +527,8 @@
 
         <div class="first-buzz">
           <div class="first-buzz-label">First Buzz</div>
-          <div class="first-buzz-name" id="buzzName">Sora</div>
-          <div class="first-buzz-team" id="buzzTeam">Team Hexx</div>
+          <div class="first-buzz-name" id="buzzName">Waiting...</div>
+          <div class="first-buzz-team" id="buzzTeam">No buzz yet</div>
         </div>
 
         <div class="timer-card">
@@ -373,62 +539,492 @@
 
       <div class="team-card team-b">
         <h2 class="team-name" id="teamBName">Team Toxx</h2>
-        <div class="player-list" id="teamBPlayers">
-          <div class="player">Justan</div>
-          <div class="player">Brother Dude</div>
-          <div class="player">Goblin</div>
-          <div class="player">BlueDog</div>
-        </div>
+        <div class="player-list" id="teamBPlayers"></div>
         <div class="score-box">
           <div class="score-label">Score</div>
-          <div class="score-value" id="scoreB">2</div>
+          <div class="score-value" id="scoreB">0</div>
         </div>
       </div>
     </div>
   </div>
 
-  <script>
-    let buzzerLocked = false;
-    let timeLeft = 30;
-    let timerRunning = false;
+  <script type="module">
+    import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
 
+    const SUPABASE_URL = "https://byrqjunplictzwdohffc.supabase.co";
+    const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ5cnFqdW5wbGljdHp3ZG9oZmZjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI4NDE3NzEsImV4cCI6MjA4ODQxNzc3MX0.WE9bZXsDgJ9je8oAUGSvfNX7R8DJMTwkzRl7LGobeyc";
+    const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    const ADMIN_HASH = "#/admin-hxh-control";
+
+    const joinCard = document.getElementById("joinCard");
+    const adminCard = document.getElementById("adminCard");
+    const modePill = document.getElementById("modePill");
+    const userPill = document.getElementById("userPill");
+    const usernameInput = document.getElementById("usernameInput");
+    const joinBtn = document.getElementById("joinBtn");
+    const joinError = document.getElementById("joinError");
+    const teamAName = document.getElementById("teamAName");
+    const teamBName = document.getElementById("teamBName");
+    const teamAPlayers = document.getElementById("teamAPlayers");
+    const teamBPlayers = document.getElementById("teamBPlayers");
+    const scoreA = document.getElementById("scoreA");
+    const scoreB = document.getElementById("scoreB");
     const buzzButton = document.getElementById("buzzButton");
     const buzzName = document.getElementById("buzzName");
     const buzzTeam = document.getElementById("buzzTeam");
     const timerValue = document.getElementById("timerValue");
+    const teamAInput = document.getElementById("teamAInput");
+    const teamBInput = document.getElementById("teamBInput");
+    const saveTeamsBtn = document.getElementById("saveTeamsBtn");
+    const timerInput = document.getElementById("timerInput");
+    const setTimerBtn = document.getElementById("setTimerBtn");
+    const startTimerBtn = document.getElementById("startTimerBtn");
+    const pauseTimerBtn = document.getElementById("pauseTimerBtn");
+    const resetBuzzerBtn = document.getElementById("resetBuzzerBtn");
+    const scoreAPlus = document.getElementById("scoreAPlus");
+    const scoreAMinus = document.getElementById("scoreAMinus");
+    const scoreBPlus = document.getElementById("scoreBPlus");
+    const scoreBMinus = document.getElementById("scoreBMinus");
+    const unassignedAdminList = document.getElementById("unassignedAdminList");
+    const allPlayersAdminList = document.getElementById("allPlayersAdminList");
+
+    let gameState = null;
+    let players = [];
+    let currentPlayer = null;
+    let localTimerInterval = null;
+
+    function isAdmin() {
+      return window.location.hash === ADMIN_HASH;
+    }
+
+    function getSavedUsername() {
+      return localStorage.getItem("hexhounds_username");
+    }
+
+    function setSavedUsername(username) {
+      localStorage.setItem("hexhounds_username", username);
+    }
+
+    function clearSavedUsername() {
+      localStorage.removeItem("hexhounds_username");
+    }
 
     function formatTime(seconds) {
-      const mins = Math.floor(seconds / 60);
-      const secs = seconds % 60;
+      const safe = Math.max(0, Number(seconds || 0));
+      const mins = Math.floor(safe / 60);
+      const secs = safe % 60;
       return String(mins).padStart(2, "0") + ":" + String(secs).padStart(2, "0");
     }
 
-    function startTimer() {
-      if (timerRunning) return;
-      timerRunning = true;
+    function renderPlayers(listEl, list, teamKey) {
+      listEl.innerHTML = "";
 
-      const interval = setInterval(() => {
-        timeLeft--;
-        timerValue.textContent = formatTime(timeLeft);
+      if (!list.length) {
+        const empty = document.createElement("div");
+        empty.className = "player";
+        empty.textContent = "No players assigned";
+        listEl.appendChild(empty);
+        return;
+      }
 
-        if (timeLeft <= 0) {
-          clearInterval(interval);
-          timerRunning = false;
+      list.forEach(player => {
+        const row = document.createElement("div");
+        row.className = "player";
+
+        if (currentPlayer && currentPlayer.username === player.username) {
+          row.classList.add("you");
         }
+
+        const name = document.createElement("span");
+        name.textContent = player.username;
+        row.appendChild(name);
+
+        if (currentPlayer && currentPlayer.username === player.username) {
+          const tag = document.createElement("span");
+          tag.className = "tag";
+          tag.textContent = "You";
+          row.appendChild(tag);
+        }
+
+        listEl.appendChild(row);
+      });
+    }
+
+    function renderAdminLists() {
+      if (!isAdmin()) return;
+
+      const unassigned = players.filter(p => !p.team);
+      unassignedAdminList.innerHTML = "";
+      allPlayersAdminList.innerHTML = "";
+
+      if (!unassigned.length) {
+        unassignedAdminList.innerHTML = "<div style='color:rgba(255,255,255,0.55)'>Nobody waiting in lobby</div>";
+      } else {
+        unassigned.forEach(player => {
+          const row = document.createElement("div");
+          row.className = "player-admin-row";
+
+          const name = document.createElement("div");
+          name.textContent = player.username;
+
+          const controls = document.createElement("div");
+          controls.style.display = "flex";
+          controls.style.gap = "6px";
+
+          const btnA = document.createElement("button");
+          btnA.className = "btn-green small-btn";
+          btnA.textContent = "A";
+          btnA.onclick = () => updatePlayerTeam(player.username, "a");
+
+          const btnB = document.createElement("button");
+          btnB.className = "btn-pink small-btn";
+          btnB.textContent = "B";
+          btnB.onclick = () => updatePlayerTeam(player.username, "b");
+
+          const btnKick = document.createElement("button");
+          btnKick.className = "btn-dark small-btn";
+          btnKick.textContent = "Kick";
+          btnKick.onclick = () => removePlayer(player.username);
+
+          controls.appendChild(btnA);
+          controls.appendChild(btnB);
+          controls.appendChild(btnKick);
+
+          row.appendChild(name);
+          row.appendChild(controls);
+          unassignedAdminList.appendChild(row);
+        });
+      }
+
+      players.forEach(player => {
+        const row = document.createElement("div");
+        row.className = "player-admin-row";
+
+        const name = document.createElement("div");
+        name.textContent = `${player.username} ${player.team === "a" ? "(A)" : player.team === "b" ? "(B)" : "(unassigned)"}`;
+
+        const controls = document.createElement("div");
+        controls.style.display = "flex";
+        controls.style.gap = "6px";
+
+        const btnA = document.createElement("button");
+        btnA.className = "btn-green small-btn";
+        btnA.textContent = "A";
+        btnA.onclick = () => updatePlayerTeam(player.username, "a");
+
+        const btnB = document.createElement("button");
+        btnB.className = "btn-pink small-btn";
+        btnB.textContent = "B";
+        btnB.onclick = () => updatePlayerTeam(player.username, "b");
+
+        const btnU = document.createElement("button");
+        btnU.className = "btn-dark small-btn";
+        btnU.textContent = "U";
+        btnU.onclick = () => updatePlayerTeam(player.username, null);
+
+        const btnKick = document.createElement("button");
+        btnKick.className = "btn-dark small-btn";
+        btnKick.textContent = "Kick";
+        btnKick.onclick = () => removePlayer(player.username);
+
+        controls.appendChild(btnA);
+        controls.appendChild(btnB);
+        controls.appendChild(btnU);
+        controls.appendChild(btnKick);
+
+        row.appendChild(name);
+        row.appendChild(controls);
+        allPlayersAdminList.appendChild(row);
+      });
+    }
+
+    function render() {
+      const teamA = players.filter(p => p.team === "a");
+      const teamB = players.filter(p => p.team === "b");
+
+      if (isAdmin()) {
+        modePill.textContent = "Admin View";
+        adminCard.classList.remove("hidden");
+      } else {
+        modePill.textContent = "Player View";
+        adminCard.classList.add("hidden");
+      }
+
+      if (currentPlayer) {
+        joinCard.classList.add("hidden");
+        userPill.textContent = currentPlayer.team
+          ? `${currentPlayer.username} • ${currentPlayer.team === "a" ? gameState.team_a_name : gameState.team_b_name}`
+          : `${currentPlayer.username} • Unassigned`;
+      } else if (!isAdmin()) {
+        joinCard.classList.remove("hidden");
+        userPill.textContent = "Not Joined";
+      } else {
+        joinCard.classList.add("hidden");
+        userPill.textContent = "Admin";
+      }
+
+      teamAName.textContent = gameState?.team_a_name || "Team Hexx";
+      teamBName.textContent = gameState?.team_b_name || "Team Toxx";
+      scoreA.textContent = gameState?.score_a ?? 0;
+      scoreB.textContent = gameState?.score_b ?? 0;
+      buzzName.textContent = gameState?.first_buzz_name || "Waiting...";
+      buzzTeam.textContent = gameState?.first_buzz_team || "No buzz yet";
+      timerValue.textContent = formatTime(gameState?.time_left ?? 30);
+
+      teamAInput.value = gameState?.team_a_name || "";
+      teamBInput.value = gameState?.team_b_name || "";
+
+      renderPlayers(teamAPlayers, teamA, "a");
+      renderPlayers(teamBPlayers, teamB, "b");
+      renderAdminLists();
+
+      const canBuzz = currentPlayer && currentPlayer.team && !gameState?.buzzer_locked;
+      buzzButton.disabled = !canBuzz;
+      buzzButton.textContent = gameState?.buzzer_locked ? "LOCKED" : "BUZZ";
+    }
+
+    async function loadGameState() {
+      const { data, error } = await supabase
+        .from("game_state")
+        .select("*")
+        .eq("id", 1)
+        .single();
+
+      if (!error) {
+        gameState = data;
+      }
+    }
+
+    async function loadPlayers() {
+      const { data, error } = await supabase
+        .from("players")
+        .select("*")
+        .order("created_at", { ascending: true });
+
+      if (!error) {
+        players = data || [];
+      }
+
+      const savedUsername = getSavedUsername();
+      currentPlayer = savedUsername
+        ? players.find(p => p.username === savedUsername) || null
+        : null;
+    }
+
+    async function refreshAll() {
+      await loadGameState();
+      await loadPlayers();
+      render();
+    }
+
+    async function joinGame() {
+      const username = usernameInput.value.trim();
+
+      if (!username) {
+        joinError.textContent = "Enter a username first.";
+        return;
+      }
+
+      const duplicate = players.find(
+        p => p.username.toLowerCase() === username.toLowerCase()
+      );
+
+      if (duplicate) {
+        joinError.textContent = "That username is already taken tonight.";
+        return;
+      }
+
+      const { error } = await supabase
+        .from("players")
+        .insert([{ username, team: null }]);
+
+      if (error) {
+        joinError.textContent = "Could not join right now.";
+        return;
+      }
+
+      setSavedUsername(username);
+      usernameInput.value = "";
+      joinError.textContent = "";
+      await refreshAll();
+    }
+
+    async function updatePlayerTeam(username, team) {
+      await supabase
+        .from("players")
+        .update({ team })
+        .eq("username", username);
+
+      await refreshAll();
+    }
+
+    async function removePlayer(username) {
+      if (currentPlayer && currentPlayer.username === username) {
+        clearSavedUsername();
+      }
+
+      await supabase
+        .from("players")
+        .delete()
+        .eq("username", username);
+
+      await refreshAll();
+    }
+
+    async function saveTeamNames() {
+      await supabase
+        .from("game_state")
+        .update({
+          team_a_name: teamAInput.value.trim() || "Team Hexx",
+          team_b_name: teamBInput.value.trim() || "Team Toxx"
+        })
+        .eq("id", 1);
+
+      await refreshAll();
+    }
+
+    async function updateScores(nextA, nextB) {
+      await supabase
+        .from("game_state")
+        .update({
+          score_a: Math.max(0, nextA),
+          score_b: Math.max(0, nextB)
+        })
+        .eq("id", 1);
+
+      await refreshAll();
+    }
+
+    async function setTimer(seconds) {
+      await supabase
+        .from("game_state")
+        .update({
+          time_left: Math.max(0, Number(seconds || 0)),
+          timer_running: false
+        })
+        .eq("id", 1);
+
+      await refreshAll();
+    }
+
+    async function setTimerRunning(running) {
+      await supabase
+        .from("game_state")
+        .update({ timer_running: running })
+        .eq("id", 1);
+
+      await refreshAll();
+    }
+
+    async function resetBuzzer() {
+      await supabase
+        .from("game_state")
+        .update({
+          buzzer_locked: false,
+          first_buzz_name: null,
+          first_buzz_team: null
+        })
+        .eq("id", 1);
+
+      await refreshAll();
+    }
+
+    async function buzz() {
+      if (!currentPlayer || !currentPlayer.team || gameState.buzzer_locked) return;
+
+      const liveTeamName = currentPlayer.team === "a"
+        ? gameState.team_a_name
+        : gameState.team_b_name;
+
+      const { data } = await supabase
+        .from("game_state")
+        .select("*")
+        .eq("id", 1)
+        .single();
+
+      if (data.buzzer_locked) {
+        await refreshAll();
+        return;
+      }
+
+      await supabase
+        .from("game_state")
+        .update({
+          buzzer_locked: true,
+          first_buzz_name: currentPlayer.username,
+          first_buzz_team: liveTeamName
+        })
+        .eq("id", 1);
+
+      await refreshAll();
+    }
+
+    function startLocalTimerLoop() {
+      if (localTimerInterval) clearInterval(localTimerInterval);
+
+      localTimerInterval = setInterval(async () => {
+        await loadGameState();
+        if (!gameState) return;
+
+        if (gameState.timer_running && gameState.time_left > 0) {
+          await supabase
+            .from("game_state")
+            .update({ time_left: gameState.time_left - 1 })
+            .eq("id", 1);
+        }
+
+        if (gameState.timer_running && gameState.time_left <= 1) {
+          await supabase
+            .from("game_state")
+            .update({ time_left: 0, timer_running: false })
+            .eq("id", 1);
+        }
+
+        await refreshAll();
       }, 1000);
     }
 
-    buzzButton.addEventListener("click", function () {
-      if (buzzerLocked) return;
+    joinBtn.addEventListener("click", joinGame);
+    buzzButton.addEventListener("click", buzz);
 
-      buzzerLocked = true;
-      buzzButton.disabled = true;
-      buzzButton.textContent = "LOCKED";
-      buzzName.textContent = "Someone";
-      buzzTeam.textContent = "Buzzed First";
+    saveTeamsBtn.addEventListener("click", saveTeamNames);
+
+    setTimerBtn.addEventListener("click", async () => {
+      await setTimer(timerInput.value || 30);
     });
 
-    timerValue.textContent = formatTime(timeLeft);
+    startTimerBtn.addEventListener("click", async () => {
+      await setTimerRunning(true);
+    });
+
+    pauseTimerBtn.addEventListener("click", async () => {
+      await setTimerRunning(false);
+    });
+
+    resetBuzzerBtn.addEventListener("click", resetBuzzer);
+
+    scoreAPlus.addEventListener("click", async () => {
+      await updateScores((gameState?.score_a ?? 0) + 1, gameState?.score_b ?? 0);
+    });
+
+    scoreAMinus.addEventListener("click", async () => {
+      await updateScores((gameState?.score_a ?? 0) - 1, gameState?.score_b ?? 0);
+    });
+
+    scoreBPlus.addEventListener("click", async () => {
+      await updateScores(gameState?.score_a ?? 0, (gameState?.score_b ?? 0) + 1);
+    });
+
+    scoreBMinus.addEventListener("click", async () => {
+      await updateScores(gameState?.score_a ?? 0, (gameState?.score_b ?? 0) - 1);
+    });
+
+    window.addEventListener("hashchange", render);
+
+    await refreshAll();
+    startLocalTimerLoop();
+    setInterval(refreshAll, 2000);
   </script>
 </body>
 </html>
