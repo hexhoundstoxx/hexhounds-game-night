@@ -4,6 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>HexHounds Game Night</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rubik+Spray+Paint&display=swap" rel="stylesheet">
   <style>
     * {
       box-sizing: border-box;
@@ -40,23 +43,24 @@
       z-index: 1;
     }
 
-    .title {
-      text-align: center;
-      margin: 20px 0 40px;
-      font-size: clamp(46px, 8vw, 96px);
-      font-weight: 900;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      color: #fff;
-      background: linear-gradient(90deg, #39ff14, #ff40d6, #b86bff);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      text-shadow:
-        0 0 10px rgba(57,255,20,0.18),
-        0 0 20px rgba(255,64,214,0.18);
-      font-family: Impact, Haettenschweiler, "Arial Black", sans-serif;
-      transform: rotate(-1deg);
-    }
+.title {
+  text-align: center;
+  margin: 20px 0 40px;
+  font-size: clamp(52px, 9vw, 108px);
+  font-weight: 400;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: #fff;
+  font-family: "Rubik Spray Paint", system-ui;
+  background: linear-gradient(90deg, #39ff14, #ff40d6, #b86bff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow:
+    0 0 10px rgba(57,255,20,0.2),
+    0 0 20px rgba(255,64,214,0.2),
+    0 0 35px rgba(184,107,255,0.15);
+  transform: rotate(-1deg);
+}
 
     .subtitle {
       text-align: center;
