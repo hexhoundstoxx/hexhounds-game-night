@@ -882,28 +882,7 @@ if (currentPlayer && !isAdmin()) {
     waitingMessage.textContent = "You’re in the lobby. Waiting for the admin to assign you to a team.";
     userPill.textContent = `${currentPlayer.username} • Unassigned`;
   }
-}
-else if (!currentPlayer && !isAdmin()) {
-  joinCard.classList.remove("hidden");
-  usernameInput.classList.remove("hidden");
-  joinBtn.classList.remove("hidden");
-  waitingMessage.classList.add("hidden");
-  userPill.textContent = "Not Joined";
-}
-else {
-  joinCard.classList.add("hidden");
-  userPill.textContent = "Admin";
-}
 
-    if (currentPlayer.team) {
-      waitingMessage.classList.remove("hidden");
-      waitingMessage.textContent = `You joined successfully and are on ${currentPlayer.team === "a" ? gameState.team_a_name : gameState.team_b_name}.`;
-      userPill.textContent = `${currentPlayer.username} • ${currentPlayer.team === "a" ? gameState.team_a_name : gameState.team_b_name}`;
-    } else {
-      waitingMessage.classList.remove("hidden");
-      waitingMessage.textContent = "You’re in the lobby. Waiting for the admin to assign you to a team.";
-      userPill.textContent = `${currentPlayer.username} • Unassigned`;
-    }
   } else if (!isAdmin()) {
     joinCard.classList.remove("hidden");
     usernameInput.classList.remove("hidden");
