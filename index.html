@@ -645,8 +645,7 @@
     const teamAInput = document.getElementById("teamAInput");
     const teamBInput = document.getElementById("teamBInput");
     const saveTeamsBtn = document.getElementById("saveTeamsBtn");
-    const jamLinkInput = document.getElementById("jamLinkInput");
-    const saveJamLinkBtn = document.getElementById("saveJamLinkBtn");
+
     const timerInput = document.getElementById("timerInput");
     const setTimerBtn = document.getElementById("setTimerBtn");
     const startTimerBtn = document.getElementById("startTimerBtn");
@@ -1016,27 +1015,17 @@ async function refreshAll() {
     }
 
     async function saveTeamNames() {
-      async function saveJamLink() {
-  await supabase
-    .from("game_state")
-    .update({
-      spotify_jam_link: jamLinkInput.value.trim() || null
-    })
-    .eq("id", 1);
 
-  await refreshAll();
 }
       await supabase
         .from("game_state")
         .update({
           team_a_name: teamAInput.value.trim() || "Team Hexx",
           team_b_name: teamBInput.value.trim() || "Team Toxx"
-          jamLinkInput.value = gameState?.spotify_jam_link || "";
-          const jamLink = gameState?.spotify_jam_link?.trim();
 
 if (jamLink) {
-  jamButton.classList.remove("hidden");
-  jamButton.href = jamLink;
+ 
+
 } else {
   jamButton.classList.add("hidden");
   jamButton.href = "#";
@@ -1166,7 +1155,7 @@ if (gameState.timer_running && gameState.time_left <= 1) {
     buzzButton.addEventListener("click", buzz);
 
     saveTeamsBtn.addEventListener("click", saveTeamNames);
-    saveJamLinkBtn.addEventListener("click", saveJamLink);
+    
 
     setTimerBtn.addEventListener("click", async () => {
       await setTimer(timerInput.value || 30);
