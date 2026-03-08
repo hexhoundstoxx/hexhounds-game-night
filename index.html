@@ -502,6 +502,7 @@
   </style>
 </head>
 <body>
+
 <div class="topbar">
   <div class="pill" id="modePill">Player View</div>
   <div class="pill" id="userPill">Not Joined</div>
@@ -531,6 +532,11 @@
         <input id="teamBInput" type="text" placeholder="Team B name" />
         <button class="btn-green" id="saveTeamsBtn">Save Team Names</button>
       </div>
+      <div class="section-label">Spotify Jam</div>
+<div class="admin-row">
+  <input id="jamLinkInput" type="text" placeholder="Paste Spotify Jam link" />
+  <button class="btn-green" id="saveJamLinkBtn">Save Jam Link</button>
+</div>
       
 <div class="section-label">Spotify Jam</div>
 <div class="admin-row">
@@ -607,20 +613,6 @@
     </div>
   </div>
 
-<div class="spotify-card">
-  <div class="spotify-title">Game Night Playlist</div>
-  <iframe
-    data-testid="embed-iframe"
-    style="border-radius:12px"
-    src="https://open.spotify.com/embed/playlist/1tFwppmYDqbVmrhqRmVEXj?utm_source=generator"
-    width="100%"
-    height="352"
-    frameborder="0"
-    allowfullscreen=""
-    allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-    loading="lazy">
-  </iframe>
-</div>
   
   <script type="module">
     import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
@@ -1040,6 +1032,15 @@ async function refreshAll() {
           team_a_name: teamAInput.value.trim() || "Team Hexx",
           team_b_name: teamBInput.value.trim() || "Team Toxx"
           jamLinkInput.value = gameState?.spotify_jam_link || "";
+          const jamLink = gameState?.spotify_jam_link?.trim();
+
+if (jamLink) {
+  jamButton.classList.remove("hidden");
+  jamButton.href = jamLink;
+} else {
+  jamButton.classList.add("hidden");
+  jamButton.href = "#";
+}
         })
         .eq("id", 1);
 
