@@ -502,11 +502,11 @@
   </style>
 </head>
 <body>
-  <div class="page">
-    <div class="topbar">
-      <div class="pill" id="modePill">Player View</div>
-      <div class="pill" id="userPill">Not Joined</div>
-    </div>
+<div class="topbar">
+  <div class="pill" id="modePill">Player View</div>
+  <div class="pill" id="userPill">Not Joined</div>
+  <a id="jamButton" class="pill hidden" href="#" target="_blank" rel="noopener noreferrer">Join Spotify Jam</a>
+</div>
 
     <div class="title">HexHounds</div>
     <div class="subtitle">Community Game Night</div>
@@ -531,7 +531,13 @@
         <input id="teamBInput" type="text" placeholder="Team B name" />
         <button class="btn-green" id="saveTeamsBtn">Save Team Names</button>
       </div>
-
+      
+<div class="section-label">Spotify Jam</div>
+<div class="admin-row">
+  <input id="jamLinkInput" type="text" placeholder="Paste Spotify Jam link" />
+  <button class="btn-green" id="saveJamLinkBtn">Save Jam Link</button>
+</div>
+      
       <div class="section-label">Timer + Round</div>
       <div class="admin-row">
         <input id="timerInput" type="number" min="0" placeholder="Seconds" />
@@ -629,10 +635,11 @@
     const adminCard = document.getElementById("adminCard");
     const modePill = document.getElementById("modePill");
     const userPill = document.getElementById("userPill");
+    const jamButton = document.getElementById("jamButton");
     const usernameInput = document.getElementById("usernameInput");
     const joinBtn = document.getElementById("joinBtn");
     const joinError = document.getElementById("joinError");
-const waitingMessage = document.getElementById("waitingMessage");
+    const waitingMessage = document.getElementById("waitingMessage");
     const teamAName = document.getElementById("teamAName");
     const teamBName = document.getElementById("teamBName");
     const teamAPlayers = document.getElementById("teamAPlayers");
@@ -646,6 +653,8 @@ const waitingMessage = document.getElementById("waitingMessage");
     const teamAInput = document.getElementById("teamAInput");
     const teamBInput = document.getElementById("teamBInput");
     const saveTeamsBtn = document.getElementById("saveTeamsBtn");
+    const jamLinkInput = document.getElementById("jamLinkInput");
+    const saveJamLinkBtn = document.getElementById("saveJamLinkBtn");
     const timerInput = document.getElementById("timerInput");
     const setTimerBtn = document.getElementById("setTimerBtn");
     const startTimerBtn = document.getElementById("startTimerBtn");
@@ -1015,11 +1024,22 @@ async function refreshAll() {
     }
 
     async function saveTeamNames() {
+      async function saveJamLink() {
+  await supabase
+    .from("game_state")
+    .update({
+      spotify_jam_link: jamLinkInput.value.trim() || null
+    })
+    .eq("id", 1);
+
+  await refreshAll();
+}
       await supabase
         .from("game_state")
         .update({
           team_a_name: teamAInput.value.trim() || "Team Hexx",
           team_b_name: teamBInput.value.trim() || "Team Toxx"
+          jamLinkInput.value = gameState?.spotify_jam_link || "";
         })
         .eq("id", 1);
 
@@ -1038,6 +1058,16 @@ async function refreshAll() {
       await refreshAll();
     }
 
+    const jamLink = gameState?.spotify_jam_link?.trim();
+
+if (jamLink) {
+  jamButton.classList.remove("hidden");
+  jamButton.href = jamLink;
+} else {
+  jamButton.classList.add("hidden");
+  jamButton.href = "#";
+}
+    
     async function setTimer(seconds) {
       await supabase
         .from("game_state")
@@ -1135,6 +1165,7 @@ if (gameState.timer_running && gameState.time_left <= 1) {
     buzzButton.addEventListener("click", buzz);
 
     saveTeamsBtn.addEventListener("click", saveTeamNames);
+    saveJamLinkBtn.addEventListener("click", saveJamLink);
 
     setTimerBtn.addEventListener("click", async () => {
       await setTimer(timerInput.value || 30);
