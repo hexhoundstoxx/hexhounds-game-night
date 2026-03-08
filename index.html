@@ -597,6 +597,8 @@ const waitingMessage = document.getElementById("waitingMessage");
     let players = [];
     let currentPlayer = null;
     let localTimerInterval = null;
+    let lastBuzzerLocked = false;
+    let lastTimerAtZero = false;
     function playTone(frequency = 440, duration = 200, type = "square", volume = 0.15) {
   try {
     const AudioContextClass = window.AudioContext || window.webkitAudioContext;
@@ -868,11 +870,30 @@ if (currentPlayer) {
         : null;
     }
 
-    async function refreshAll() {
-      await loadGameState();
-      await loadPlayers();
-      render();
-    }
+async function refreshAll() {
+  const previousBuzzerLocked = gameState?.buzzer_locked ?? false;
+  const previousTimeLeft = gameState?.time_left ?? null;
+
+  await loadGameState();
+  await loadPlayers();
+
+  const currentBuzzerLocked = gameState?.buzzer_locked ?? false;
+  const currentTimeLeft = gameState?.time_left ?? null;
+
+  if (!previousBuzzerLocked && currentBuzzerLocked) {
+    playBuzzSound();
+  }
+
+  if (
+    previousTimeLeft !== null &&
+    previousTimeLeft > 0 &&
+    currentTimeLeft === 0
+  ) {
+    playTimerEndSound();
+  }
+
+  render();
+}
 
     async function joinGame() {
       const username = usernameInput.value.trim();
@@ -1013,7 +1034,6 @@ if (currentPlayer) {
         })
         .eq("id", 1);
 
-      playBuzzSound();
       await refreshAll();
     }
 
@@ -1036,14 +1056,12 @@ function startLocalTimerLoop() {
         .eq("id", 1);
     }
 
-    if (gameState.timer_running && gameState.time_left <= 1) {
-      await supabase
-        .from("game_state")
-        .update({ time_left: 0, timer_running: false })
-        .eq("id", 1);
-
-      playTimerEndSound();
-    }
+if (gameState.timer_running && gameState.time_left <= 1) {
+  await supabase
+    .from("game_state")
+    .update({ time_left: 0, timer_running: false })
+    .eq("id", 1);
+}
 
     await refreshAll();
   }, 1000);
