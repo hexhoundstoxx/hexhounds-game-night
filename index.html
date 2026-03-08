@@ -856,83 +856,84 @@
     });
   }
 
-  function render() {
-    const teamA = players.filter(p => p.team === "a");
-    const teamB = players.filter(p => p.team === "b");
+function render() {
+  const teamA = players.filter(p => p.team === "a");
+  const teamB = players.filter(p => p.team === "b");
 
-    if (isAdmin()) {
-      modePill.textContent = "Admin View";
-      adminCard.classList.remove("hidden");
-    } else {
-      modePill.textContent = "Player View";
-      adminCard.classList.add("hidden");
-    }
-
-    if (currentPlayer) {
-      joinCard.classList.remove("hidden");
-      usernameInput.classList.add("hidden");
-      joinBtn.classList.add("hidden");
-      joinError.textContent = "";
-
-      if (currentPlayer.team) {
-        waitingMessage.classList.remove("hidden");
-        waitingMessage.textContent = `You joined successfully and are on ${currentPlayer.team === "a" ? gameState.team_a_name : gameState.team_b_name}.`;
-        userPill.textContent = `${currentPlayer.username} • ${currentPlayer.team === "a" ? gameState.team_a_name : gameState.team_b_name}`;
-      } else {
-        waitingMessage.classList.remove("hidden");
-        waitingMessage.textContent = "You’re in the lobby. Waiting for the admin to assign you to a team.";
-        userPill.textContent = `${currentPlayer.username} • Unassigned`;
-      }
-    } else if (!isAdmin()) {
-      joinCard.classList.remove("hidden");
-      usernameInput.classList.remove("hidden");
-      joinBtn.classList.remove("hidden");
-      waitingMessage.classList.add("hidden");
-      userPill.textContent = "Not Joined";
-    } else {
-      joinCard.classList.add("hidden");
-      userPill.textContent = "Admin";
-    }
-
-    teamAName.textContent = gameState?.team_a_name || "Team Hexx";
-    teamBName.textContent = gameState?.team_b_name || "Team Toxx";
-    scoreA.textContent = gameState?.score_a ?? 0;
-    scoreB.textContent = gameState?.score_b ?? 0;
-    buzzName.textContent = gameState?.first_buzz_name || "Waiting...";
-    buzzTeam.textContent = gameState?.first_buzz_team || "No buzz yet";
-    timerValue.textContent = formatTime(gameState?.time_left ?? 30);
-
-if (teamAInput && document.activeElement !== teamAInput) {
-  teamAInput.value = gameState?.team_a_name || "";
-}
-
-if (teamBInput && document.activeElement !== teamBInput) {
-  teamBInput.value = gameState?.team_b_name || "";
-}
-
-if (jamLinkInput && document.activeElement !== jamLinkInput) {
-  jamLinkInput.value = gameState?.spotify_jam_link || "";
-}
-
-    if (jamButton) {
-      const jamLink = gameState?.spotify_jam_link?.trim();
-      if (jamLink) {
-        jamButton.classList.remove("hidden");
-        jamButton.href = jamLink;
-      } else {
-        jamButton.classList.add("hidden");
-        jamButton.href = "#";
-      }
-    }
-
-    renderPlayers(teamAPlayers, teamA);
-    renderPlayers(teamBPlayers, teamB);
-    renderAdminLists();
-
-    const canBuzz = currentPlayer && currentPlayer.team && !gameState?.buzzer_locked;
-    buzzButton.disabled = !canBuzz;
-    buzzButton.textContent = gameState?.buzzer_locked ? "LOCKED" : "BUZZ";
+  if (isAdmin()) {
+    modePill.textContent = "Admin View";
+    adminCard.classList.remove("hidden");
+  } else {
+    modePill.textContent = "Player View";
+    adminCard.classList.add("hidden");
   }
+
+  if (currentPlayer) {
+    joinCard.classList.remove("hidden");
+    usernameInput.classList.add("hidden");
+    joinBtn.classList.add("hidden");
+    joinError.textContent = "";
+
+    if (currentPlayer.team) {
+      waitingMessage.classList.remove("hidden");
+      waitingMessage.textContent = `You joined successfully and are on ${currentPlayer.team === "a" ? gameState.team_a_name : gameState.team_b_name}.`;
+      userPill.textContent = `${currentPlayer.username} • ${currentPlayer.team === "a" ? gameState.team_a_name : gameState.team_b_name}`;
+    } else {
+      waitingMessage.classList.remove("hidden");
+      waitingMessage.textContent = "You’re in the lobby. Waiting for the admin to assign you to a team.";
+      userPill.textContent = `${currentPlayer.username} • Unassigned`;
+    }
+  } else if (!isAdmin()) {
+    joinCard.classList.remove("hidden");
+    usernameInput.classList.remove("hidden");
+    joinBtn.classList.remove("hidden");
+    waitingMessage.classList.add("hidden");
+    userPill.textContent = "Not Joined";
+  } else {
+    joinCard.classList.add("hidden");
+    userPill.textContent = "Admin";
+  }
+
+  teamAName.textContent = gameState?.team_a_name || "Team Hexx";
+  teamBName.textContent = gameState?.team_b_name || "Team Toxx";
+  scoreA.textContent = gameState?.score_a ?? 0;
+  scoreB.textContent = gameState?.score_b ?? 0;
+  buzzName.textContent = gameState?.first_buzz_name || "Waiting...";
+  buzzTeam.textContent = gameState?.first_buzz_team || "No buzz yet";
+  timerValue.textContent = formatTime(gameState?.time_left ?? 30);
+
+  if (teamAInput && document.activeElement !== teamAInput) {
+    teamAInput.value = gameState?.team_a_name || "";
+  }
+
+  if (teamBInput && document.activeElement !== teamBInput) {
+    teamBInput.value = gameState?.team_b_name || "";
+  }
+
+  if (jamLinkInput && document.activeElement !== jamLinkInput) {
+    jamLinkInput.value = gameState?.spotify_jam_link || "";
+  }
+
+  if (jamButton) {
+    const jamLink = gameState?.spotify_jam_link?.trim();
+
+    if (jamLink) {
+      jamButton.classList.remove("hidden");
+      jamButton.href = jamLink;
+    } else {
+      jamButton.classList.add("hidden");
+      jamButton.href = "#";
+    }
+  }
+
+  renderPlayers(teamAPlayers, teamA);
+  renderPlayers(teamBPlayers, teamB);
+  renderAdminLists();
+
+  const canBuzz = currentPlayer && currentPlayer.team && !gameState?.buzzer_locked;
+  buzzButton.disabled = !canBuzz;
+  buzzButton.textContent = gameState?.buzzer_locked ? "LOCKED" : "BUZZ";
+}
 
   async function loadGameState() {
     const { data, error } = await supabase
