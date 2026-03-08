@@ -24,6 +24,30 @@
       overflow-x: hidden;
     }
 
+.spotify-card {
+  max-width: 900px;
+  margin: 36px auto 0;
+  background: rgba(0,0,0,0.5);
+  border: 2px solid rgba(57,255,20,0.25);
+  border-radius: 24px;
+  padding: 18px;
+  box-shadow:
+    0 0 18px rgba(57,255,20,0.08),
+    0 0 24px rgba(255,64,214,0.06);
+}
+
+.spotify-title {
+  text-align: center;
+  margin-bottom: 14px;
+  font-size: 24px;
+  font-weight: 900;
+  color: #7dff68;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-family: "Sedgwick Ave Display", cursive;
+  text-shadow: 0 0 10px rgba(57,255,20,0.35);
+}
+    
     body::before {
       content: "";
       position: fixed;
@@ -577,6 +601,21 @@
     </div>
   </div>
 
+  <!-- Spotify Playlist -->
+  <div class="spotify-card">
+    <div class="spotify-title">Game Night Playlist</div>
+    <iframe
+      style="border-radius:18px"
+      src="https://open.spotify.com/playlist/1tFwppmYDqbVmrhqRmVEXj?si=WLOQIBNHTvmrDrvr4sZh7w&pi=lrIKUaV-SP-U_"
+      width="100%"
+      height="352"
+      frameborder="0"
+      allowfullscreen=""
+      allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+      loading="lazy">
+    </iframe>
+  </div>
+  
   <script type="module">
     import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
 
