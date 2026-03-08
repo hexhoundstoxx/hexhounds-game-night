@@ -614,205 +614,195 @@
   </div>
 
   
-  <script type="module">
-    import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
+ <script type="module">
+  import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
 
-    const SUPABASE_URL = "https://byrqjunplictzwdohffc.supabase.co";
-    const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ5cnFqdW5wbGljdHp3ZG9oZmZjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI4NDE3NzEsImV4cCI6MjA4ODQxNzc3MX0.WE9bZXsDgJ9je8oAUGSvfNX7R8DJMTwkzRl7LGobeyc";
-    const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+  const SUPABASE_URL = "https://byrqjunplictzwdohffc.supabase.co";
+  const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ5cnFqdW5wbGljdHp3ZG9oZmZjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI4NDE3NzEsImV4cCI6MjA4ODQxNzc3MX0.WE9bZXsDgJ9je8oAUGSvfNX7R8DJMTwkzRl7LGobeyc";
+  const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-    const ADMIN_HASH = "#/admin-hxh-control";
+  const ADMIN_HASH = "#/admin-hxh-control";
 
-    const joinCard = document.getElementById("joinCard");
-    const adminCard = document.getElementById("adminCard");
-    const modePill = document.getElementById("modePill");
-    const userPill = document.getElementById("userPill");
-    const jamButton = document.getElementById("jamButton");
-    const usernameInput = document.getElementById("usernameInput");
-    const joinBtn = document.getElementById("joinBtn");
-    const joinError = document.getElementById("joinError");
-    const waitingMessage = document.getElementById("waitingMessage");
-    const teamAName = document.getElementById("teamAName");
-    const teamBName = document.getElementById("teamBName");
-    const teamAPlayers = document.getElementById("teamAPlayers");
-    const teamBPlayers = document.getElementById("teamBPlayers");
-    const scoreA = document.getElementById("scoreA");
-    const scoreB = document.getElementById("scoreB");
-    const buzzButton = document.getElementById("buzzButton");
-    const buzzName = document.getElementById("buzzName");
-    const buzzTeam = document.getElementById("buzzTeam");
-    const timerValue = document.getElementById("timerValue");
-    const teamAInput = document.getElementById("teamAInput");
-    const teamBInput = document.getElementById("teamBInput");
-    const saveTeamsBtn = document.getElementById("saveTeamsBtn");
+  const joinCard = document.getElementById("joinCard");
+  const adminCard = document.getElementById("adminCard");
+  const modePill = document.getElementById("modePill");
+  const userPill = document.getElementById("userPill");
+  const usernameInput = document.getElementById("usernameInput");
+  const joinBtn = document.getElementById("joinBtn");
+  const joinError = document.getElementById("joinError");
+  const waitingMessage = document.getElementById("waitingMessage");
 
-    const timerInput = document.getElementById("timerInput");
-    const setTimerBtn = document.getElementById("setTimerBtn");
-    const startTimerBtn = document.getElementById("startTimerBtn");
-    const pauseTimerBtn = document.getElementById("pauseTimerBtn");
-    const resetBuzzerBtn = document.getElementById("resetBuzzerBtn");
-    const scoreAPlus = document.getElementById("scoreAPlus");
-    const scoreAMinus = document.getElementById("scoreAMinus");
-    const scoreBPlus = document.getElementById("scoreBPlus");
-    const scoreBMinus = document.getElementById("scoreBMinus");
-    const unassignedAdminList = document.getElementById("unassignedAdminList");
-    const allPlayersAdminList = document.getElementById("allPlayersAdminList");
+  const teamAName = document.getElementById("teamAName");
+  const teamBName = document.getElementById("teamBName");
+  const teamAPlayers = document.getElementById("teamAPlayers");
+  const teamBPlayers = document.getElementById("teamBPlayers");
+  const scoreA = document.getElementById("scoreA");
+  const scoreB = document.getElementById("scoreB");
+  const buzzButton = document.getElementById("buzzButton");
+  const buzzName = document.getElementById("buzzName");
+  const buzzTeam = document.getElementById("buzzTeam");
+  const timerValue = document.getElementById("timerValue");
 
-    let gameState = null;
-    let players = [];
-    let currentPlayer = null;
-    let localTimerInterval = null;
-    let lastBuzzerLocked = false;
-    let lastTimerAtZero = false;
-    function playTone(frequency = 440, duration = 200, type = "square", volume = 0.15) {
-  try {
-    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-    if (!AudioContextClass) return;
+  const teamAInput = document.getElementById("teamAInput");
+  const teamBInput = document.getElementById("teamBInput");
+  const saveTeamsBtn = document.getElementById("saveTeamsBtn");
+  const timerInput = document.getElementById("timerInput");
+  const setTimerBtn = document.getElementById("setTimerBtn");
+  const startTimerBtn = document.getElementById("startTimerBtn");
+  const pauseTimerBtn = document.getElementById("pauseTimerBtn");
+  const resetBuzzerBtn = document.getElementById("resetBuzzerBtn");
+  const scoreAPlus = document.getElementById("scoreAPlus");
+  const scoreAMinus = document.getElementById("scoreAMinus");
+  const scoreBPlus = document.getElementById("scoreBPlus");
+  const scoreBMinus = document.getElementById("scoreBMinus");
+  const unassignedAdminList = document.getElementById("unassignedAdminList");
+  const allPlayersAdminList = document.getElementById("allPlayersAdminList");
 
-    const audioCtx = new AudioContextClass();
-    const oscillator = audioCtx.createOscillator();
-    const gainNode = audioCtx.createGain();
+  // Optional Spotify Jam elements. If these don't exist yet, site still works.
+  const jamButton = document.getElementById("jamButton");
+  const jamLinkInput = document.getElementById("jamLinkInput");
+  const saveJamLinkBtn = document.getElementById("saveJamLinkBtn");
 
-    oscillator.type = type;
-    oscillator.frequency.setValueAtTime(frequency, audioCtx.currentTime);
+  let gameState = null;
+  let players = [];
+  let currentPlayer = null;
+  let localTimerInterval = null;
+  let audioCtx = null;
 
-    gainNode.gain.setValueAtTime(volume, audioCtx.currentTime);
-    gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration / 1000);
-
-    oscillator.connect(gainNode);
-    gainNode.connect(audioCtx.destination);
-
-    oscillator.start();
-    oscillator.stop(audioCtx.currentTime + duration / 1000);
-
-    oscillator.onended = () => {
-      audioCtx.close();
-    };
-  } catch (err) {
-    console.log("Audio could not play:", err);
+  function isAdmin() {
+    return window.location.hash === ADMIN_HASH;
   }
-}
 
-function playBuzzSound() {
-  playTone(160, 180, "sawtooth", 0.18);
-  setTimeout(() => playTone(110, 220, "square", 0.14), 90);
-}
+  function getSavedUsername() {
+    return localStorage.getItem("hexhounds_username");
+  }
 
-function playTimerEndSound() {
-  playTone(880, 120, "square", 0.12);
-  setTimeout(() => playTone(660, 120, "square", 0.12), 140);
-  setTimeout(() => playTone(440, 180, "square", 0.14), 280);
-}
+  function setSavedUsername(username) {
+    localStorage.setItem("hexhounds_username", username);
+  }
 
-    function isAdmin() {
-      return window.location.hash === ADMIN_HASH;
+  function clearSavedUsername() {
+    localStorage.removeItem("hexhounds_username");
+  }
+
+  function formatTime(seconds) {
+    const safe = Math.max(0, Number(seconds || 0));
+    const mins = Math.floor(safe / 60);
+    const secs = safe % 60;
+    return String(mins).padStart(2, "0") + ":" + String(secs).padStart(2, "0");
+  }
+
+  function getAudioContext() {
+    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+    if (!AudioContextClass) return null;
+
+    if (!audioCtx) {
+      audioCtx = new AudioContextClass();
     }
 
-    function getSavedUsername() {
-      return localStorage.getItem("hexhounds_username");
+    if (audioCtx.state === "suspended") {
+      audioCtx.resume();
     }
 
-    function setSavedUsername(username) {
-      localStorage.setItem("hexhounds_username", username);
+    return audioCtx;
+  }
+
+  function unlockAudio() {
+    const ctx = getAudioContext();
+    if (!ctx) return;
+    if (ctx.state === "suspended") {
+      ctx.resume();
+    }
+  }
+
+  function playTone(frequency = 440, duration = 200, type = "square", volume = 0.15) {
+    try {
+      const ctx = getAudioContext();
+      if (!ctx) return;
+
+      const oscillator = ctx.createOscillator();
+      const gainNode = ctx.createGain();
+
+      oscillator.type = type;
+      oscillator.frequency.setValueAtTime(frequency, ctx.currentTime);
+
+      gainNode.gain.setValueAtTime(volume, ctx.currentTime);
+      gainNode.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration / 1000);
+
+      oscillator.connect(gainNode);
+      gainNode.connect(ctx.destination);
+
+      oscillator.start(ctx.currentTime);
+      oscillator.stop(ctx.currentTime + duration / 1000);
+    } catch (err) {
+      console.log("Audio could not play:", err);
+    }
+  }
+
+  function playBuzzSound() {
+    playTone(180, 120, "sawtooth", 0.2);
+    setTimeout(() => playTone(120, 180, "square", 0.18), 90);
+  }
+
+  function playTimerEndSound() {
+    playTone(900, 100, "square", 0.12);
+    setTimeout(() => playTone(700, 100, "square", 0.12), 120);
+    setTimeout(() => playTone(500, 180, "square", 0.14), 240);
+  }
+
+  window.addEventListener("click", unlockAudio, { once: true });
+  window.addEventListener("touchstart", unlockAudio, { once: true });
+
+  function renderPlayers(listEl, list) {
+    listEl.innerHTML = "";
+
+    if (!list.length) {
+      const empty = document.createElement("div");
+      empty.className = "player";
+      empty.textContent = "No players assigned";
+      listEl.appendChild(empty);
+      return;
     }
 
-    function clearSavedUsername() {
-      localStorage.removeItem("hexhounds_username");
-    }
+    list.forEach(player => {
+      const row = document.createElement("div");
+      row.className = "player";
 
-    function formatTime(seconds) {
-      const safe = Math.max(0, Number(seconds || 0));
-      const mins = Math.floor(safe / 60);
-      const secs = safe % 60;
-      return String(mins).padStart(2, "0") + ":" + String(secs).padStart(2, "0");
-    }
-
-    function renderPlayers(listEl, list, teamKey) {
-      listEl.innerHTML = "";
-
-      if (!list.length) {
-        const empty = document.createElement("div");
-        empty.className = "player";
-        empty.textContent = "No players assigned";
-        listEl.appendChild(empty);
-        return;
+      if (currentPlayer && currentPlayer.username === player.username) {
+        row.classList.add("you");
       }
 
-      list.forEach(player => {
-        const row = document.createElement("div");
-        row.className = "player";
+      const name = document.createElement("span");
+      name.textContent = player.username;
+      row.appendChild(name);
 
-        if (currentPlayer && currentPlayer.username === player.username) {
-          row.classList.add("you");
-        }
-
-        const name = document.createElement("span");
-        name.textContent = player.username;
-        row.appendChild(name);
-
-        if (currentPlayer && currentPlayer.username === player.username) {
-          const tag = document.createElement("span");
-          tag.className = "tag";
-          tag.textContent = "You";
-          row.appendChild(tag);
-        }
-
-        listEl.appendChild(row);
-      });
-    }
-
-    function renderAdminLists() {
-      if (!isAdmin()) return;
-
-      const unassigned = players.filter(p => !p.team);
-      unassignedAdminList.innerHTML = "";
-      allPlayersAdminList.innerHTML = "";
-
-      if (!unassigned.length) {
-        unassignedAdminList.innerHTML = "<div style='color:rgba(255,255,255,0.55)'>Nobody waiting in lobby</div>";
-      } else {
-        unassigned.forEach(player => {
-          const row = document.createElement("div");
-          row.className = "player-admin-row";
-
-          const name = document.createElement("div");
-          name.textContent = player.username;
-
-          const controls = document.createElement("div");
-          controls.style.display = "flex";
-          controls.style.gap = "6px";
-
-          const btnA = document.createElement("button");
-          btnA.className = "btn-green small-btn";
-          btnA.textContent = "A";
-          btnA.onclick = () => updatePlayerTeam(player.username, "a");
-
-          const btnB = document.createElement("button");
-          btnB.className = "btn-pink small-btn";
-          btnB.textContent = "B";
-          btnB.onclick = () => updatePlayerTeam(player.username, "b");
-
-          const btnKick = document.createElement("button");
-          btnKick.className = "btn-dark small-btn";
-          btnKick.textContent = "Kick";
-          btnKick.onclick = () => removePlayer(player.username);
-
-          controls.appendChild(btnA);
-          controls.appendChild(btnB);
-          controls.appendChild(btnKick);
-
-          row.appendChild(name);
-          row.appendChild(controls);
-          unassignedAdminList.appendChild(row);
-        });
+      if (currentPlayer && currentPlayer.username === player.username) {
+        const tag = document.createElement("span");
+        tag.className = "tag";
+        tag.textContent = "You";
+        row.appendChild(tag);
       }
 
-      players.forEach(player => {
+      listEl.appendChild(row);
+    });
+  }
+
+  function renderAdminLists() {
+    if (!isAdmin()) return;
+
+    const unassigned = players.filter(p => !p.team);
+    unassignedAdminList.innerHTML = "";
+    allPlayersAdminList.innerHTML = "";
+
+    if (!unassigned.length) {
+      unassignedAdminList.innerHTML = "<div style='color:rgba(255,255,255,0.55)'>Nobody waiting in lobby</div>";
+    } else {
+      unassigned.forEach(player => {
         const row = document.createElement("div");
         row.className = "player-admin-row";
 
         const name = document.createElement("div");
-        name.textContent = `${player.username} ${player.team === "a" ? "(A)" : player.team === "b" ? "(B)" : "(unassigned)"}`;
+        name.textContent = player.username;
 
         const controls = document.createElement("div");
         controls.style.display = "flex";
@@ -828,11 +818,6 @@ function playTimerEndSound() {
         btnB.textContent = "B";
         btnB.onclick = () => updatePlayerTeam(player.username, "b");
 
-        const btnU = document.createElement("button");
-        btnU.className = "btn-dark small-btn";
-        btnU.textContent = "U";
-        btnU.onclick = () => updatePlayerTeam(player.username, null);
-
         const btnKick = document.createElement("button");
         btnKick.className = "btn-dark small-btn";
         btnKick.textContent = "Kick";
@@ -840,358 +825,405 @@ function playTimerEndSound() {
 
         controls.appendChild(btnA);
         controls.appendChild(btnB);
-        controls.appendChild(btnU);
         controls.appendChild(btnKick);
 
         row.appendChild(name);
         row.appendChild(controls);
-        allPlayersAdminList.appendChild(row);
+        unassignedAdminList.appendChild(row);
       });
     }
 
-    function render() {
-      const teamA = players.filter(p => p.team === "a");
-      const teamB = players.filter(p => p.team === "b");
+    players.forEach(player => {
+      const row = document.createElement("div");
+      row.className = "player-admin-row";
 
-      if (isAdmin()) {
-        modePill.textContent = "Admin View";
-        adminCard.classList.remove("hidden");
-      } else {
-        modePill.textContent = "Player View";
-        adminCard.classList.add("hidden");
-      }
+      const name = document.createElement("div");
+      name.textContent = `${player.username} ${player.team === "a" ? "(A)" : player.team === "b" ? "(B)" : "(unassigned)"}`;
 
-if (currentPlayer) {
-  joinCard.classList.remove("hidden");
-  usernameInput.classList.add("hidden");
-  joinBtn.classList.add("hidden");
-  joinError.textContent = "";
+      const controls = document.createElement("div");
+      controls.style.display = "flex";
+      controls.style.gap = "6px";
 
-  if (currentPlayer.team) {
-    waitingMessage.classList.remove("hidden");
-    waitingMessage.textContent = `You joined successfully and are on ${currentPlayer.team === "a" ? gameState.team_a_name : gameState.team_b_name}.`;
-    userPill.textContent = `${currentPlayer.username} • ${currentPlayer.team === "a" ? gameState.team_a_name : gameState.team_b_name}`;
-  } else {
-    waitingMessage.classList.remove("hidden");
-    waitingMessage.textContent = "You’re in the lobby. Waiting for the admin to assign you to a team.";
-    userPill.textContent = `${currentPlayer.username} • Unassigned`;
-  }
-} else if (!isAdmin()) {
-  joinCard.classList.remove("hidden");
-  usernameInput.classList.remove("hidden");
-  joinBtn.classList.remove("hidden");
-  waitingMessage.classList.add("hidden");
-  userPill.textContent = "Not Joined";
-} else {
-  joinCard.classList.add("hidden");
-  userPill.textContent = "Admin";
-}
+      const btnA = document.createElement("button");
+      btnA.className = "btn-green small-btn";
+      btnA.textContent = "A";
+      btnA.onclick = () => updatePlayerTeam(player.username, "a");
 
-      teamAName.textContent = gameState?.team_a_name || "Team Hexx";
-      teamBName.textContent = gameState?.team_b_name || "Team Toxx";
-      scoreA.textContent = gameState?.score_a ?? 0;
-      scoreB.textContent = gameState?.score_b ?? 0;
-      buzzName.textContent = gameState?.first_buzz_name || "Waiting...";
-      buzzTeam.textContent = gameState?.first_buzz_team || "No buzz yet";
-      timerValue.textContent = formatTime(gameState?.time_left ?? 30);
+      const btnB = document.createElement("button");
+      btnB.className = "btn-pink small-btn";
+      btnB.textContent = "B";
+      btnB.onclick = () => updatePlayerTeam(player.username, "b");
 
-      teamAInput.value = gameState?.team_a_name || "";
-      teamBInput.value = gameState?.team_b_name || "";
+      const btnU = document.createElement("button");
+      btnU.className = "btn-dark small-btn";
+      btnU.textContent = "U";
+      btnU.onclick = () => updatePlayerTeam(player.username, null);
 
-      renderPlayers(teamAPlayers, teamA, "a");
-      renderPlayers(teamBPlayers, teamB, "b");
-      renderAdminLists();
+      const btnKick = document.createElement("button");
+      btnKick.className = "btn-dark small-btn";
+      btnKick.textContent = "Kick";
+      btnKick.onclick = () => removePlayer(player.username);
 
-      const canBuzz = currentPlayer && currentPlayer.team && !gameState?.buzzer_locked;
-      buzzButton.disabled = !canBuzz;
-      buzzButton.textContent = gameState?.buzzer_locked ? "LOCKED" : "BUZZ";
-    }
+      controls.appendChild(btnA);
+      controls.appendChild(btnB);
+      controls.appendChild(btnU);
+      controls.appendChild(btnKick);
 
-    async function loadGameState() {
-      const { data, error } = await supabase
-        .from("game_state")
-        .select("*")
-        .eq("id", 1)
-        .single();
-
-      if (!error) {
-        gameState = data;
-      }
-    }
-
-    async function loadPlayers() {
-      const { data, error } = await supabase
-        .from("players")
-        .select("*")
-        .order("created_at", { ascending: true });
-
-      if (!error) {
-        players = data || [];
-      }
-
-      const savedUsername = getSavedUsername();
-      currentPlayer = savedUsername
-        ? players.find(p => p.username === savedUsername) || null
-        : null;
-    }
-
-async function refreshAll() {
-  const previousBuzzerLocked = gameState?.buzzer_locked ?? false;
-  const previousTimeLeft = gameState?.time_left ?? null;
-
-  await loadGameState();
-  await loadPlayers();
-
-  const currentBuzzerLocked = gameState?.buzzer_locked ?? false;
-  const currentTimeLeft = gameState?.time_left ?? null;
-
-  if (!previousBuzzerLocked && currentBuzzerLocked) {
-    playBuzzSound();
+      row.appendChild(name);
+      row.appendChild(controls);
+      allPlayersAdminList.appendChild(row);
+    });
   }
 
-  if (
-    previousTimeLeft !== null &&
-    previousTimeLeft > 0 &&
-    currentTimeLeft === 0
-  ) {
-    playTimerEndSound();
-  }
+  function render() {
+    const teamA = players.filter(p => p.team === "a");
+    const teamB = players.filter(p => p.team === "b");
 
-  render();
-}
+    if (isAdmin()) {
+      modePill.textContent = "Admin View";
+      adminCard.classList.remove("hidden");
+    } else {
+      modePill.textContent = "Player View";
+      adminCard.classList.add("hidden");
+    }
 
-    async function joinGame() {
-      const username = usernameInput.value.trim();
-
-      if (!username) {
-        joinError.textContent = "Enter a username first.";
-        return;
-      }
-
-      const duplicate = players.find(
-        p => p.username.toLowerCase() === username.toLowerCase()
-      );
-
-      if (duplicate) {
-        joinError.textContent = "That username is already taken tonight.";
-        return;
-      }
-
-      const { error } = await supabase
-        .from("players")
-        .insert([{ username, team: null }]);
-
-      if (error) {
-        joinError.textContent = "Could not join right now.";
-        return;
-      }
-
-      setSavedUsername(username);
-      usernameInput.value = "";
+    if (currentPlayer) {
+      joinCard.classList.remove("hidden");
+      usernameInput.classList.add("hidden");
+      joinBtn.classList.add("hidden");
       joinError.textContent = "";
-      await refreshAll();
-    }
 
-    async function updatePlayerTeam(username, team) {
-      await supabase
-        .from("players")
-        .update({ team })
-        .eq("username", username);
-
-      await refreshAll();
-    }
-
-    async function removePlayer(username) {
-      if (currentPlayer && currentPlayer.username === username) {
-        clearSavedUsername();
+      if (currentPlayer.team) {
+        waitingMessage.classList.remove("hidden");
+        waitingMessage.textContent = `You joined successfully and are on ${currentPlayer.team === "a" ? gameState.team_a_name : gameState.team_b_name}.`;
+        userPill.textContent = `${currentPlayer.username} • ${currentPlayer.team === "a" ? gameState.team_a_name : gameState.team_b_name}`;
+      } else {
+        waitingMessage.classList.remove("hidden");
+        waitingMessage.textContent = "You’re in the lobby. Waiting for the admin to assign you to a team.";
+        userPill.textContent = `${currentPlayer.username} • Unassigned`;
       }
-
-      await supabase
-        .from("players")
-        .delete()
-        .eq("username", username);
-
-      await refreshAll();
+    } else if (!isAdmin()) {
+      joinCard.classList.remove("hidden");
+      usernameInput.classList.remove("hidden");
+      joinBtn.classList.remove("hidden");
+      waitingMessage.classList.add("hidden");
+      userPill.textContent = "Not Joined";
+    } else {
+      joinCard.classList.add("hidden");
+      userPill.textContent = "Admin";
     }
 
-    async function saveTeamNames() {
+    teamAName.textContent = gameState?.team_a_name || "Team Hexx";
+    teamBName.textContent = gameState?.team_b_name || "Team Toxx";
+    scoreA.textContent = gameState?.score_a ?? 0;
+    scoreB.textContent = gameState?.score_b ?? 0;
+    buzzName.textContent = gameState?.first_buzz_name || "Waiting...";
+    buzzTeam.textContent = gameState?.first_buzz_team || "No buzz yet";
+    timerValue.textContent = formatTime(gameState?.time_left ?? 30);
 
-}
-      await supabase
-        .from("game_state")
-        .update({
-          team_a_name: teamAInput.value.trim() || "Team Hexx",
-          team_b_name: teamBInput.value.trim() || "Team Toxx"
+    if (teamAInput) teamAInput.value = gameState?.team_a_name || "";
+    if (teamBInput) teamBInput.value = gameState?.team_b_name || "";
+    if (jamLinkInput) jamLinkInput.value = gameState?.spotify_jam_link || "";
 
-if (jamLink) {
- 
-
-} else {
-  jamButton.classList.add("hidden");
-  jamButton.href = "#";
-}
-        })
-        .eq("id", 1);
-
-      await refreshAll();
-    }
-
-    async function updateScores(nextA, nextB) {
-      await supabase
-        .from("game_state")
-        .update({
-          score_a: Math.max(0, nextA),
-          score_b: Math.max(0, nextB)
-        })
-        .eq("id", 1);
-
-      await refreshAll();
-    }
-
-    const jamLink = gameState?.spotify_jam_link?.trim();
-
-if (jamLink) {
-  jamButton.classList.remove("hidden");
-  jamButton.href = jamLink;
-} else {
-  jamButton.classList.add("hidden");
-  jamButton.href = "#";
-}
-    
-    async function setTimer(seconds) {
-      await supabase
-        .from("game_state")
-        .update({
-          time_left: Math.max(0, Number(seconds || 0)),
-          timer_running: false
-        })
-        .eq("id", 1);
-
-      await refreshAll();
-    }
-
-    async function setTimerRunning(running) {
-      await supabase
-        .from("game_state")
-        .update({ timer_running: running })
-        .eq("id", 1);
-
-      await refreshAll();
-    }
-
-    async function resetBuzzer() {
-      await supabase
-        .from("game_state")
-        .update({
-          buzzer_locked: false,
-          first_buzz_name: null,
-          first_buzz_team: null
-        })
-        .eq("id", 1);
-
-      await refreshAll();
-    }
-
-    async function buzz() {
-      if (!currentPlayer || !currentPlayer.team || gameState.buzzer_locked) return;
-
-      const liveTeamName = currentPlayer.team === "a"
-        ? gameState.team_a_name
-        : gameState.team_b_name;
-
-      const { data } = await supabase
-        .from("game_state")
-        .select("*")
-        .eq("id", 1)
-        .single();
-
-      if (data.buzzer_locked) {
-        await refreshAll();
-        return;
+    if (jamButton) {
+      const jamLink = gameState?.spotify_jam_link?.trim();
+      if (jamLink) {
+        jamButton.classList.remove("hidden");
+        jamButton.href = jamLink;
+      } else {
+        jamButton.classList.add("hidden");
+        jamButton.href = "#";
       }
-
-      await supabase
-        .from("game_state")
-        .update({
-          buzzer_locked: true,
-          first_buzz_name: currentPlayer.username,
-          first_buzz_team: liveTeamName
-        })
-        .eq("id", 1);
-
-      await refreshAll();
     }
 
-function startLocalTimerLoop() {
-  if (localTimerInterval) clearInterval(localTimerInterval);
+    renderPlayers(teamAPlayers, teamA);
+    renderPlayers(teamBPlayers, teamB);
+    renderAdminLists();
 
-  localTimerInterval = setInterval(async () => {
+    const canBuzz = currentPlayer && currentPlayer.team && !gameState?.buzzer_locked;
+    buzzButton.disabled = !canBuzz;
+    buzzButton.textContent = gameState?.buzzer_locked ? "LOCKED" : "BUZZ";
+  }
+
+  async function loadGameState() {
+    const { data, error } = await supabase
+      .from("game_state")
+      .select("*")
+      .eq("id", 1)
+      .single();
+
+    if (!error) {
+      gameState = data;
+    }
+  }
+
+  async function loadPlayers() {
+    const { data, error } = await supabase
+      .from("players")
+      .select("*")
+      .order("created_at", { ascending: true });
+
+    if (!error) {
+      players = data || [];
+    }
+
+    const savedUsername = getSavedUsername();
+    currentPlayer = savedUsername
+      ? players.find(p => p.username === savedUsername) || null
+      : null;
+  }
+
+  async function refreshAll() {
+    const previousBuzzerLocked = gameState?.buzzer_locked ?? false;
+    const previousTimeLeft = gameState?.time_left ?? null;
+
     await loadGameState();
-    if (!gameState) return;
+    await loadPlayers();
 
-    if (!isAdmin()) {
+    const currentBuzzerLocked = gameState?.buzzer_locked ?? false;
+    const currentTimeLeft = gameState?.time_left ?? null;
+
+    if (!previousBuzzerLocked && currentBuzzerLocked) {
+      playBuzzSound();
+    }
+
+    if (
+      previousTimeLeft !== null &&
+      previousTimeLeft > 0 &&
+      currentTimeLeft === 0
+    ) {
+      playTimerEndSound();
+    }
+
+    render();
+  }
+
+  async function joinGame() {
+    const username = usernameInput.value.trim();
+
+    if (!username) {
+      joinError.textContent = "Enter a username first.";
+      return;
+    }
+
+    const duplicate = players.find(
+      p => p.username.toLowerCase() === username.toLowerCase()
+    );
+
+    if (duplicate) {
+      joinError.textContent = "That username is already taken tonight.";
+      return;
+    }
+
+    const { error } = await supabase
+      .from("players")
+      .insert([{ username, team: null }]);
+
+    if (error) {
+      joinError.textContent = "Could not join right now.";
+      return;
+    }
+
+    setSavedUsername(username);
+    usernameInput.value = "";
+    joinError.textContent = "";
+    await refreshAll();
+  }
+
+  async function updatePlayerTeam(username, team) {
+    await supabase
+      .from("players")
+      .update({ team })
+      .eq("username", username);
+
+    await refreshAll();
+  }
+
+  async function removePlayer(username) {
+    if (currentPlayer && currentPlayer.username === username) {
+      clearSavedUsername();
+    }
+
+    await supabase
+      .from("players")
+      .delete()
+      .eq("username", username);
+
+    await refreshAll();
+  }
+
+  async function saveTeamNames() {
+    await supabase
+      .from("game_state")
+      .update({
+        team_a_name: teamAInput.value.trim() || "Team Hexx",
+        team_b_name: teamBInput.value.trim() || "Team Toxx"
+      })
+      .eq("id", 1);
+
+    await refreshAll();
+  }
+
+  async function saveJamLink() {
+    if (!jamLinkInput) return;
+
+    await supabase
+      .from("game_state")
+      .update({
+        spotify_jam_link: jamLinkInput.value.trim() || null
+      })
+      .eq("id", 1);
+
+    await refreshAll();
+  }
+
+  async function updateScores(nextA, nextB) {
+    await supabase
+      .from("game_state")
+      .update({
+        score_a: Math.max(0, nextA),
+        score_b: Math.max(0, nextB)
+      })
+      .eq("id", 1);
+
+    await refreshAll();
+  }
+
+  async function setTimer(seconds) {
+    await supabase
+      .from("game_state")
+      .update({
+        time_left: Math.max(0, Number(seconds || 0)),
+        timer_running: false
+      })
+      .eq("id", 1);
+
+    await refreshAll();
+  }
+
+  async function setTimerRunning(running) {
+    await supabase
+      .from("game_state")
+      .update({ timer_running: running })
+      .eq("id", 1);
+
+    await refreshAll();
+  }
+
+  async function resetBuzzer() {
+    await supabase
+      .from("game_state")
+      .update({
+        buzzer_locked: false,
+        first_buzz_name: null,
+        first_buzz_team: null
+      })
+      .eq("id", 1);
+
+    await refreshAll();
+  }
+
+  async function buzz() {
+    if (!currentPlayer || !currentPlayer.team || gameState.buzzer_locked) return;
+
+    const liveTeamName = currentPlayer.team === "a"
+      ? gameState.team_a_name
+      : gameState.team_b_name;
+
+    const { data } = await supabase
+      .from("game_state")
+      .select("*")
+      .eq("id", 1)
+      .single();
+
+    if (data.buzzer_locked) {
       await refreshAll();
       return;
     }
 
-    if (gameState.timer_running && gameState.time_left > 0) {
-      await supabase
-        .from("game_state")
-        .update({ time_left: gameState.time_left - 1 })
-        .eq("id", 1);
-    }
-
-if (gameState.timer_running && gameState.time_left <= 1) {
-  await supabase
-    .from("game_state")
-    .update({ time_left: 0, timer_running: false })
-    .eq("id", 1);
-}
+    await supabase
+      .from("game_state")
+      .update({
+        buzzer_locked: true,
+        first_buzz_name: currentPlayer.username,
+        first_buzz_team: liveTeamName
+      })
+      .eq("id", 1);
 
     await refreshAll();
-  }, 1000);
-}
-    joinBtn.addEventListener("click", joinGame);
-    buzzButton.addEventListener("click", buzz);
+  }
 
-    saveTeamsBtn.addEventListener("click", saveTeamNames);
-    
+  function startLocalTimerLoop() {
+    if (localTimerInterval) clearInterval(localTimerInterval);
 
-    setTimerBtn.addEventListener("click", async () => {
-      await setTimer(timerInput.value || 30);
-    });
+    localTimerInterval = setInterval(async () => {
+      await loadGameState();
+      if (!gameState) return;
 
-    startTimerBtn.addEventListener("click", async () => {
-      await setTimerRunning(true);
-    });
+      if (!isAdmin()) {
+        await refreshAll();
+        return;
+      }
 
-    pauseTimerBtn.addEventListener("click", async () => {
-      await setTimerRunning(false);
-    });
+      if (gameState.timer_running && gameState.time_left > 0) {
+        await supabase
+          .from("game_state")
+          .update({ time_left: gameState.time_left - 1 })
+          .eq("id", 1);
+      }
 
-    resetBuzzerBtn.addEventListener("click", resetBuzzer);
+      if (gameState.timer_running && gameState.time_left <= 1) {
+        await supabase
+          .from("game_state")
+          .update({ time_left: 0, timer_running: false })
+          .eq("id", 1);
+      }
 
-    scoreAPlus.addEventListener("click", async () => {
-      await updateScores((gameState?.score_a ?? 0) + 1, gameState?.score_b ?? 0);
-    });
+      await refreshAll();
+    }, 1000);
+  }
 
-    scoreAMinus.addEventListener("click", async () => {
-      await updateScores((gameState?.score_a ?? 0) - 1, gameState?.score_b ?? 0);
-    });
+  joinBtn.addEventListener("click", joinGame);
+  buzzButton.addEventListener("click", buzz);
+  saveTeamsBtn.addEventListener("click", saveTeamNames);
 
-    scoreBPlus.addEventListener("click", async () => {
-      await updateScores(gameState?.score_a ?? 0, (gameState?.score_b ?? 0) + 1);
-    });
+  if (saveJamLinkBtn) {
+    saveJamLinkBtn.addEventListener("click", saveJamLink);
+  }
 
-    scoreBMinus.addEventListener("click", async () => {
-      await updateScores(gameState?.score_a ?? 0, (gameState?.score_b ?? 0) - 1);
-    });
+  setTimerBtn.addEventListener("click", async () => {
+    await setTimer(timerInput.value || 30);
+  });
 
-    window.addEventListener("hashchange", render);
+  startTimerBtn.addEventListener("click", async () => {
+    await setTimerRunning(true);
+  });
 
-    await refreshAll();
-    startLocalTimerLoop();
-    setInterval(refreshAll, 2000);
-  </script>
-</body>
-</html>
+  pauseTimerBtn.addEventListener("click", async () => {
+    await setTimerRunning(false);
+  });
+
+  resetBuzzerBtn.addEventListener("click", resetBuzzer);
+
+  scoreAPlus.addEventListener("click", async () => {
+    await updateScores((gameState?.score_a ?? 0) + 1, gameState?.score_b ?? 0);
+  });
+
+  scoreAMinus.addEventListener("click", async () => {
+    await updateScores((gameState?.score_a ?? 0) - 1, gameState?.score_b ?? 0);
+  });
+
+  scoreBPlus.addEventListener("click", async () => {
+    await updateScores(gameState?.score_a ?? 0, (gameState?.score_b ?? 0) + 1);
+  });
+
+  scoreBMinus.addEventListener("click", async () => {
+    await updateScores(gameState?.score_a ?? 0, (gameState?.score_b ?? 0) - 1);
+  });
+
+  window.addEventListener("hashchange", render);
+
+  await refreshAll();
+  startLocalTimerLoop();
+  setInterval(refreshAll, 2000);
+</script>
