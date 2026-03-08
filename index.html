@@ -195,6 +195,8 @@
     }
 
     .team-card {
+      position: relative;
+      overflow: visible;
       background: rgba(0,0,0,0.45);
       border-radius: 26px;
       padding: 22px;
@@ -211,7 +213,37 @@
       border: 2px solid rgba(255, 64, 214, 0.85);
       box-shadow: 0 0 24px rgba(255,64,214,0.18);
     }
+.team-a::after,
+.team-b::after {
+  content: "";
+  position: absolute;
+  left: 24px;
+  right: 24px;
+  bottom: -14px;
+  height: 20px;
+  pointer-events: none;
+  border-radius: 0 0 20px 20px;
+}
 
+.team-a::after {
+  background:
+    radial-gradient(circle at 8% 0, #39ff14 0 8px, transparent 9px),
+    radial-gradient(circle at 22% 0, #39ff14 0 10px, transparent 11px),
+    radial-gradient(circle at 40% 0, #39ff14 0 7px, transparent 8px),
+    radial-gradient(circle at 63% 0, #39ff14 0 11px, transparent 12px),
+    radial-gradient(circle at 84% 0, #39ff14 0 8px, transparent 9px);
+  filter: drop-shadow(0 0 8px rgba(57,255,20,0.45));
+}
+
+.team-b::after {
+  background:
+    radial-gradient(circle at 10% 0, #ff40d6 0 8px, transparent 9px),
+    radial-gradient(circle at 28% 0, #ff40d6 0 10px, transparent 11px),
+    radial-gradient(circle at 48% 0, #ff40d6 0 7px, transparent 8px),
+    radial-gradient(circle at 70% 0, #ff40d6 0 11px, transparent 12px),
+    radial-gradient(circle at 88% 0, #ff40d6 0 8px, transparent 9px);
+  filter: drop-shadow(0 0 8px rgba(255,64,214,0.45));
+}
 .team-name {
   text-align: center;
   margin: 0 0 18px;
@@ -319,15 +351,34 @@
       justify-content: center;
     }
 
-    .buzzer-glow {
-      position: absolute;
-      inset: -12px;
-      border-radius: 50%;
-      background: linear-gradient(90deg, #39ff14, #ff9a2f, #ff40d6);
-      filter: blur(18px);
-      opacity: 0.95;
-    }
-
+.buzzer-glow {
+  position: absolute;
+  inset: -18px;
+  border-radius: 50%;
+  background: conic-gradient(
+    from 0deg,
+    #39ff14,
+    #7dff68,
+    #ff9a2f,
+    #ff40d6,
+    #b86bff,
+    #39ff14
+  );
+  filter: blur(24px);
+  opacity: 0.95;
+  animation: buzzerGlowSpin 6s linear infinite;
+}
+@keyframes buzzerGlowSpin {
+  0% {
+    transform: rotate(0deg) scale(1);
+  }
+  50% {
+    transform: rotate(180deg) scale(1.04);
+  }
+  100% {
+    transform: rotate(360deg) scale(1);
+  }
+}
 .buzzer {
   position: relative;
   z-index: 2;
@@ -464,17 +515,125 @@
       .admin-grid { grid-template-columns: 1fr; }
     }
 
-    @media (max-width: 640px) {
-      .page { padding: 18px 12px 30px; }
-      .team-name { font-size: 34px; }
-      .player { font-size: 20px; }
-      .buzzer-wrap { width: 190px; height: 190px; }
-      .buzzer { width: 165px; height: 165px; font-size: 42px; }
-      .first-buzz-name { font-size: 36px; }
-      .timer-value { font-size: 46px; }
-      .join-row, .admin-row { flex-direction: column; align-items: stretch; }
-      input, select, button { width: 100%; }
-    }
+@media (max-width: 640px) {
+  .page {
+    padding: 18px 12px 30px;
+  }
+
+  .topbar {
+    gap: 8px;
+  }
+
+  .pill {
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+
+  .title {
+    font-size: clamp(46px, 12vw, 72px);
+    margin: 12px 0 24px;
+  }
+
+  .subtitle {
+    margin-top: -10px;
+    margin-bottom: 20px;
+    font-size: 10px;
+    letter-spacing: 4px;
+  }
+
+  .arena {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .center-column {
+    order: 1;
+    padding-top: 0;
+    gap: 14px;
+  }
+
+  .team-a {
+    order: 2;
+  }
+
+  .team-b {
+    order: 3;
+  }
+
+  .buzzer-wrap {
+    width: 180px;
+    height: 180px;
+  }
+
+  .buzzer {
+    width: 155px;
+    height: 155px;
+    font-size: 38px;
+  }
+
+  .first-buzz {
+    padding: 16px;
+  }
+
+  .first-buzz-name {
+    font-size: 34px;
+  }
+
+  .first-buzz-team {
+    font-size: 24px;
+  }
+
+  .timer-card {
+    padding: 14px;
+  }
+
+  .timer-value {
+    font-size: 42px;
+  }
+
+  .team-card {
+    min-height: auto;
+    padding: 16px;
+  }
+
+  .team-name {
+    font-size: 36px;
+    margin-bottom: 12px;
+  }
+
+  .player-list {
+    min-height: auto;
+    padding: 12px;
+    gap: 8px;
+  }
+
+  .player {
+    font-size: 18px;
+    padding: 10px 12px;
+  }
+
+  .score-box {
+    margin-top: 12px;
+    padding: 10px 14px;
+  }
+
+  .score-value {
+    font-size: 36px;
+  }
+
+  .join-row,
+  .admin-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  input,
+  select,
+  button {
+    width: 100%;
+  }
+}
   </style>
 </head>
 <body>
