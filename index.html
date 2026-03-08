@@ -902,9 +902,17 @@
     buzzTeam.textContent = gameState?.first_buzz_team || "No buzz yet";
     timerValue.textContent = formatTime(gameState?.time_left ?? 30);
 
-    if (teamAInput) teamAInput.value = gameState?.team_a_name || "";
-    if (teamBInput) teamBInput.value = gameState?.team_b_name || "";
-    if (jamLinkInput) jamLinkInput.value = gameState?.spotify_jam_link || "";
+if (teamAInput && document.activeElement !== teamAInput) {
+  teamAInput.value = gameState?.team_a_name || "";
+}
+
+if (teamBInput && document.activeElement !== teamBInput) {
+  teamBInput.value = gameState?.team_b_name || "";
+}
+
+if (jamLinkInput && document.activeElement !== jamLinkInput) {
+  jamLinkInput.value = gameState?.spotify_jam_link || "";
+}
 
     if (jamButton) {
       const jamLink = gameState?.spotify_jam_link?.trim();
