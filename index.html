@@ -213,37 +213,7 @@
       border: 2px solid rgba(255, 64, 214, 0.85);
       box-shadow: 0 0 24px rgba(255,64,214,0.18);
     }
-.team-a::after,
-.team-b::after {
-  content: "";
-  position: absolute;
-  left: 24px;
-  right: 24px;
-  bottom: -14px;
-  height: 20px;
-  pointer-events: none;
-  border-radius: 0 0 20px 20px;
-}
 
-.team-a::after {
-  background:
-    radial-gradient(circle at 8% 0, #39ff14 0 8px, transparent 9px),
-    radial-gradient(circle at 22% 0, #39ff14 0 10px, transparent 11px),
-    radial-gradient(circle at 40% 0, #39ff14 0 7px, transparent 8px),
-    radial-gradient(circle at 63% 0, #39ff14 0 11px, transparent 12px),
-    radial-gradient(circle at 84% 0, #39ff14 0 8px, transparent 9px);
-  filter: drop-shadow(0 0 8px rgba(57,255,20,0.45));
-}
-
-.team-b::after {
-  background:
-    radial-gradient(circle at 10% 0, #ff40d6 0 8px, transparent 9px),
-    radial-gradient(circle at 28% 0, #ff40d6 0 10px, transparent 11px),
-    radial-gradient(circle at 48% 0, #ff40d6 0 7px, transparent 8px),
-    radial-gradient(circle at 70% 0, #ff40d6 0 11px, transparent 12px),
-    radial-gradient(circle at 88% 0, #ff40d6 0 8px, transparent 9px);
-  filter: drop-shadow(0 0 8px rgba(255,64,214,0.45));
-}
 .team-name {
   text-align: center;
   margin: 0 0 18px;
@@ -595,6 +565,7 @@
   .team-card {
     min-height: auto;
     padding: 16px;
+    width: 100%;
   }
 
   .team-name {
@@ -633,6 +604,19 @@
   button {
     width: 100%;
   }
+  .arena {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: center;
+}
+
+.center-column,
+.team-a,
+.team-b {
+  width: 100%;
+  max-width: 420px;
+}
 }
   </style>
 </head>
